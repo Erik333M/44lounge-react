@@ -26,7 +26,7 @@ const FONTS = [
 ];
 
 export const GOOGLE_FONTS = [
-  'Unbounded', 'Manrope', 'JetBrains Mono', 'Syne', 'Space Grotesk', 'Space Mono', 'Poppins', 'Montserrat', 'Roboto', 'Open Sans', 'Lato', 'Raleway', 'Inter', 'Rubik',
+  'Unbounded', 'JetBrains Mono', 'Syne', 'Space Grotesk', 'Space Mono', 'Poppins', 'Montserrat', 'Roboto', 'Open Sans', 'Lato', 'Raleway', 'Inter', 'Rubik',
   'Manrope', 'Nunito', 'Josefin Sans', 'Oswald', 'Bebas Neue', 'Playfair Display', 'Lora', 'Cormorant Garamond',
   'Cinzel', 'Libre Baskerville', 'Great Vibes', 'Dancing Script', 'Pacifico', 'Noto Sans Armenian', 'Noto Serif Armenian',
 ];
@@ -100,7 +100,7 @@ export function FontsEditor({ theme, onChange }) {
         the list, or upload your own font file below.
       </p>
       <datalist id="adm-font-list">
-        {[...custom.map((f) => f.name), ...GOOGLE_FONTS, ...SYSTEM_FONTS].map((f) => (
+        {[...new Set([...custom.map((f) => f.name), ...GOOGLE_FONTS, ...SYSTEM_FONTS])].map((f) => (
           <option key={f} value={f} />
         ))}
       </datalist>

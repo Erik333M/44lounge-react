@@ -83,7 +83,7 @@ function PlateCarousel({ categories, active, onChange }) {
           return (
             <button
               type="button"
-              key={c.title}
+              key={`${i}-${c.title}`}
               className={`plate${offset === 0 ? ' is-active' : ''}`}
               style={{ '--o': offset, '--abs': Math.abs(offset) }}
               onClick={() => !drag.current.moved && go(i)}
@@ -125,7 +125,7 @@ function PlateCarousel({ categories, active, onChange }) {
 
       <div className="plates__dots" aria-hidden="true">
         {categories.map((c, i) => (
-          <span key={c.title} className={i === active ? 'is-active' : undefined} />
+          <span key={i} className={i === active ? 'is-active' : undefined} />
         ))}
       </div>
     </div>
@@ -232,7 +232,7 @@ function Items({ cat }) {
       {photos.length > 0 && (
         <ul className="dish-grid">
           {photos.map((it, i) => (
-            <li key={it.name}>
+            <li key={`${i}-${it.name}`}>
               <button type="button" className="dish-card" onClick={() => setOpen(i)}>
                 <span className={`dish-card__plate${isCutout(it.image) ? ' is-cutout' : ''}`}>
                   <Img src={it.image} alt="" />
@@ -277,10 +277,10 @@ const slug = (t) =>
 function TextMenu({ cats }) {
   return (
     <div className="text-menu">
-      {cats.map((c) => {
+      {cats.map((c, ci) => {
         const priced = c.items.some((i) => i.price);
         return (
-          <section className="text-menu__cat" id={`cat-${slug(c.title)}`} key={c.title}>
+          <section className="text-menu__cat" id={`cat-${slug(c.title)}`} key={`${ci}-${c.title}`}>
             <div className="text-menu__head">
               <h2 className="display text-menu__title">{c.title}</h2>
               <span className="eyebrow">{c.items.length}</span>
@@ -380,7 +380,7 @@ export default function Menu() {
           {cats.length > 1 && (
             <div className="menu-chips">
               {cats.map((c, i) => (
-                <button type="button" key={c.title} className={i === active ? 'active' : undefined} onClick={() => pick(i)}>
+                <button type="button" key={`${i}-${c.title}`} className={i === active ? 'active' : undefined} onClick={() => pick(i)}>
                   {c.title}
                 </button>
               ))}
