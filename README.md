@@ -28,7 +28,7 @@ Build for hosting: `npm run build` → upload the `dist/` folder.
 - Fonts: Unbounded (headings), Manrope (text), JetBrains Mono (labels), from Google Fonts.
 - Motion: GSAP + ScrollTrigger, smooth scrolling with Lenis (`src/lib/motion.js`). Everything respects
   "reduce motion" in the system settings. Animations are code-only, not editable in the admin.
-- Photos: `public/images/` (web-sized copies). Originals are in `public/documentation/`.
+- Photos: `public/images/` (`menu/` dish cut-outs, `venue/` photos of the lounge).
 - Open/closed status uses Yerevan time and the hours set in the admin.
 
 ## Table bookings (Telegram)

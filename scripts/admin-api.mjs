@@ -56,17 +56,13 @@ async function backup() {
 
 const IMAGE_TYPES = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif']);
 const PUBLIC_DIR = join(ROOT, 'public');
-const OLD_TEMPLATE_DIRS = new Set(['documentation', 'html']);
 
 async function listImages() {
   const out = [];
   const walk = async (dir, rel) => {
     for (const e of await readdir(dir, { withFileTypes: true })) {
       const r = rel ? `${rel}/${e.name}` : e.name;
-      if (e.isDirectory()) {
-        if (!rel && OLD_TEMPLATE_DIRS.has(e.name)) continue; // leftovers of the old template, not used by the site
-        await walk(join(dir, e.name), r);
-      }
+      if (e.isDirectory()) await walk(join(dir, e.name), r);
       else if (IMAGE_TYPES.has(extname(e.name).toLowerCase())) out.push(r);
     }
   };
