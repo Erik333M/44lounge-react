@@ -55,7 +55,8 @@ function LocalBusinessData({ general, hours }) {
 }
 
 export default function Footer() {
-  const { general, hours, footer, menu } = useContent();
+  const { general, hours, footer, menu, buttons } = useContent();
+  const h = footer.headings;
   const ref = useRef(null);
   const now = useYerevanClock();
   const year = new Date().getFullYear();
@@ -78,7 +79,7 @@ export default function Footer() {
               <Phone /> {general.phone}
             </a>
             <a className="btn" href={general.mapLink} target="_blank" rel="noreferrer">
-              Directions <Arrow />
+              {buttons.directionsShort} <Arrow />
             </a>
           </div>
         </div>
@@ -103,19 +104,19 @@ export default function Footer() {
 
           <nav className="footer__cols" aria-label="Footer">
             <div className="footer__col">
-              <h3 className="eyebrow">Visit</h3>
+              <h3 className="eyebrow">{h.visit}</h3>
               <address>
                 <a href={general.mapLink} target="_blank" rel="noreferrer">
                   {general.address}
                 </a>
               </address>
               <a className="footer__link-arrow" href={general.mapLink} target="_blank" rel="noreferrer">
-                Get directions <Arrow />
+                {buttons.directions} <Arrow />
               </a>
             </div>
 
             <div className="footer__col">
-              <h3 className="eyebrow">Hours</h3>
+              <h3 className="eyebrow">{h.hours}</h3>
               <p>{hours.label}</p>
               <p className="footer__hours">
                 {hours.open} – {hours.close}
@@ -123,7 +124,7 @@ export default function Footer() {
             </div>
 
             <div className="footer__col">
-              <h3 className="eyebrow">Contact</h3>
+              <h3 className="eyebrow">{h.contact}</h3>
               <ul>
                 <li>
                   <a href={telHref(general.phone)}>{general.phone}</a>
@@ -137,7 +138,7 @@ export default function Footer() {
             </div>
 
             <div className="footer__col">
-              <h3 className="eyebrow">Menu</h3>
+              <h3 className="eyebrow">{h.menu}</h3>
               <ul>
                 <li>
                   <Link to="/menu/hookah">{menu.hookah.label}</Link>
@@ -152,7 +153,7 @@ export default function Footer() {
             </div>
 
             <div className="footer__col">
-              <h3 className="eyebrow">Lounge</h3>
+              <h3 className="eyebrow">{h.lounge}</h3>
               <ul>
                 <li>
                   <Link to="/">{general.nav.home}</Link>
@@ -174,7 +175,7 @@ export default function Footer() {
             Yerevan {now.text} · {menu.intro}
           </span>
           <button type="button" onClick={() => scrollToTop(true)}>
-            Back to top ↑
+            {buttons.backToTop}
           </button>
         </div>
       </div>

@@ -17,7 +17,7 @@ export function Brand() {
 }
 
 export default function Nav() {
-  const { general } = useContent();
+  const { general, buttons } = useContent();
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -96,7 +96,7 @@ export default function Nav() {
           <p className="muted">{general.address}</p>
           <BookButton className="btn btn--accent" tabIndex={open ? 0 : -1} onClickCapture={() => setOpen(false)} />
           <a className="btn" href={telHref(general.phone)} tabIndex={open ? 0 : -1}>
-            Call {general.phone}
+            {buttons.call} {general.phone}
           </a>
         </div>
       </div>

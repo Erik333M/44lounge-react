@@ -43,7 +43,6 @@
   "home": {
     "hero": {
       "image": "images/venue/sign-smoke.jpg",
-      "eyebrow": "Hookah lounge in the heart of Yerevan",
       "title": "Where evenings and talks are longer.",
       "scrollHint": "Scroll",
       "video": "videos/smoke.mp4"
@@ -155,7 +154,6 @@
     "intro": "Prices in Armenian dram (AMD).",
     "hookah": {
       "label": "Hookah",
-      "image": "images/venue/three-hookahs.jpg",
       "categories": [
         {
           "title": "Hookah",
@@ -195,8 +193,7 @@
               "description": "",
               "price": "9,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/three-hookahs.jpg"
+          ]
         },
         {
           "title": "Bowl base",
@@ -231,8 +228,7 @@
               "description": "",
               "price": ""
             }
-          ],
-          "image": "images/venue/plate/hookah-smoke-man.jpg"
+          ]
         },
         {
           "title": "Premium base",
@@ -267,14 +263,12 @@
               "description": "",
               "price": ""
             }
-          ],
-          "image": "images/venue/plate/hookah-guest-sunglasses.jpg"
+          ]
         }
       ]
     },
     "kitchen": {
       "label": "Kitchen",
-      "image": "images/venue/dinner-club-sandwich.jpg",
       "categories": [
         {
           "title": "Salads",
@@ -635,7 +629,6 @@
     },
     "bar": {
       "label": "Bar",
-      "image": "images/venue/bartender-pour.jpg",
       "categories": [
         {
           "title": "House Specialty Cocktails",
@@ -700,8 +693,7 @@
               "description": "Rum, lime, liqueur",
               "price": "4,700 AMD"
             }
-          ],
-          "image": "images/venue/plate/red-cocktail.jpg"
+          ]
         },
         {
           "title": "Classic Cocktails",
@@ -821,8 +813,7 @@
               "description": "",
               "price": "3,900 AMD"
             }
-          ],
-          "image": "images/venue/plate/martini.jpg"
+          ]
         },
         {
           "title": "Wine",
@@ -862,8 +853,7 @@
               "description": "",
               "price": "10,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Vodka",
@@ -888,8 +878,7 @@
               "description": "",
               "price": "1,500 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Champagne",
@@ -919,8 +908,7 @@
               "description": "",
               "price": "18,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/neon-hookah-guest.jpg"
+          ]
         },
         {
           "title": "Vermouth",
@@ -970,8 +958,7 @@
               "description": "",
               "price": "1,400 AMD"
             }
-          ],
-          "image": "images/venue/plate/orange-cocktail.jpg"
+          ]
         },
         {
           "title": "Liquor",
@@ -1036,8 +1023,7 @@
               "description": "",
               "price": "5,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Gin",
@@ -1072,8 +1058,7 @@
               "description": "",
               "price": "2,500 AMD"
             }
-          ],
-          "image": "images/venue/plate/gin-shelf.jpg"
+          ]
         },
         {
           "title": "Beer",
@@ -1098,8 +1083,7 @@
               "description": "",
               "price": "1,300 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Beer Snacks",
@@ -1124,8 +1108,7 @@
               "description": "",
               "price": "1,600 AMD"
             }
-          ],
-          "image": "images/menu/beer-set.jpg"
+          ]
         },
         {
           "title": "Single Malt",
@@ -1150,8 +1133,7 @@
               "description": "",
               "price": "11,000 AMD"
             }
-          ],
-          "image": "images/whisky-ice.jpg"
+          ]
         },
         {
           "title": "Blended",
@@ -1196,8 +1178,7 @@
               "description": "",
               "price": "4,600 AMD"
             }
-          ],
-          "image": "images/whisky-ice.jpg"
+          ]
         },
         {
           "title": "Bourbon",
@@ -1227,8 +1208,7 @@
               "description": "",
               "price": "3,200 AMD"
             }
-          ],
-          "image": "images/whisky-ice.jpg"
+          ]
         },
         {
           "title": "Brandy",
@@ -1253,8 +1233,7 @@
               "description": "",
               "price": "2,600 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Tequila",
@@ -1289,8 +1268,7 @@
               "description": "",
               "price": "16,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/burnt-orange-highball.jpg"
+          ]
         },
         {
           "title": "Rum",
@@ -1325,8 +1303,7 @@
               "description": "",
               "price": "7,000 AMD"
             }
-          ],
-          "image": "images/venue/plate/bartender-pour.jpg"
+          ]
         },
         {
           "title": "Coffee",
@@ -1381,8 +1358,7 @@
               "description": "",
               "price": "2,100 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         },
         {
           "title": "Tea",
@@ -1457,8 +1433,7 @@
               "description": "",
               "price": "2,700 AMD"
             }
-          ],
-          "image": "images/venue/plate/monkeys-mural.jpg"
+          ]
         },
         {
           "title": "Fresh",
@@ -1488,8 +1463,7 @@
               "description": "",
               "price": "5,500 AMD"
             }
-          ],
-          "image": "images/venue/plate/orange-cocktail.jpg"
+          ]
         },
         {
           "title": "Lemonade",
@@ -1519,8 +1493,7 @@
               "description": "",
               "price": "2,500 / 6,600 AMD"
             }
-          ],
-          "image": "images/venue/plate/burnt-orange-highball.jpg"
+          ]
         },
         {
           "title": "Milkshake",
@@ -1565,8 +1538,7 @@
               "description": "",
               "price": "2,500 AMD"
             }
-          ],
-          "image": "images/venue/plate/dinner-club-sandwich.jpg"
+          ]
         },
         {
           "title": "Soft Drinks",
@@ -1601,8 +1573,7 @@
               "description": "",
               "price": "600 AMD"
             }
-          ],
-          "image": "images/venue/plate/bar-counter.jpg"
+          ]
         }
       ]
     }
@@ -1624,12 +1595,54 @@
     "title": "Visit us",
     "text": "Walk in any day from noon, or call ahead to book a table.",
     "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.2527857993446!2d44.513124075705015!3d40.18118746994205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abcfb4a5189b5%3A0x7a82b1740f7725db!2s2%2C%205%20Abovyan%20poxoc%2C%20Yerevan%200010!5e0!3m2!1sru!2sam!4v1693490624270!5m2!1sru!2sam",
-    "image": "images/venue/sign-smoke.jpg"
+    "image": "images/venue/sign-smoke.jpg",
+    "addressLabel": "Address",
+    "bookLabel": "Book a table"
   },
   "footer": {
     "ctaTitle": "Your table is waiting tonight.",
-    "bigText": "44 Lounge",
     "line": "Hookah, kitchen and bar on Abovyan Street.",
-    "copyright": "© {year} VG Company. All rights reserved."
+    "copyright": "© {year} VG Company. All rights reserved.",
+    "headings": {
+      "visit": "Visit",
+      "hours": "Hours",
+      "contact": "Contact",
+      "menu": "Menu",
+      "lounge": "Lounge"
+    }
+  },
+  "buttons": {
+    "seeMenu": "See the menu",
+    "fullKitchenMenu": "Full kitchen menu",
+    "directions": "Get directions",
+    "directionsShort": "Directions",
+    "call": "Call",
+    "callNow": "Call now",
+    "bookOnline": "Book online",
+    "backToTop": "Back to top ↑"
+  },
+  "booking": {
+    "title": "Book a table",
+    "name": "Name",
+    "phone": "Phone number",
+    "guests": "Guests",
+    "date": "Date",
+    "time": "Time",
+    "choose": "Choose",
+    "noTimes": "No times left today",
+    "submit": "Send booking request",
+    "sending": "Sending…",
+    "note": "Open {open}–{close} daily · or call",
+    "chooseTimeError": "Please choose a time.",
+    "sendError": "Could not send the booking right now. Please call us.",
+    "sentLabel": "Request sent",
+    "sentTitle": "See you soon, {name}",
+    "tableFor": "Table for {guests}",
+    "sentText": "Your request went straight to our team. If anything changes, call us at {phone}.",
+    "done": "Done"
+  },
+  "notFound": {
+    "text": "This table is empty. The page you are looking for has moved or never existed.",
+    "button": "Back to the lounge"
   }
 }

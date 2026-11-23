@@ -15,10 +15,13 @@ const SECTIONS = [
   { id: 'fonts', group: 'Design', label: 'Fonts', page: '/' },
   { id: 'general', group: 'Whole site', label: 'Name & contacts', path: ['general'], page: '/visit' },
   { id: 'hours', group: 'Whole site', label: 'Opening hours', path: ['hours'], page: '/' },
+  { id: 'buttons', group: 'Whole site', label: 'Buttons', path: ['buttons'], page: '/visit' },
+  { id: 'booking', group: 'Whole site', label: 'Booking form', path: ['booking'], page: '/visit' },
   { id: 'footer', group: 'Whole site', label: 'Footer', path: ['footer'], page: '/' },
   { id: 'home', group: 'Pages', label: 'Home', path: ['home'], page: '/' },
   { id: 'about', group: 'Pages', label: 'About', path: ['about'], page: '/about' },
   { id: 'visit', group: 'Pages', label: 'Visit', path: ['visit'], page: '/visit' },
+  { id: 'notFound', group: 'Pages', label: 'Page not found', path: ['notFound'], page: '/this-page-does-not-exist' },
   { id: 'menuPage', group: 'Menu', label: 'Menu page', path: ['menu'], only: ['title', 'intro'], page: '/menu/hookah' },
   { id: 'hookah', group: 'Menu', label: 'Hookah', path: ['menu', 'hookah'], page: '/menu/hookah' },
   { id: 'kitchen', group: 'Menu', label: 'Kitchen', path: ['menu', 'kitchen'], page: '/menu/kitchen' },
@@ -32,6 +35,7 @@ const PAGES = [
   ['/menu/bar', 'Menu · Bar'],
   ['/about', 'About'],
   ['/visit', 'Visit'],
+  ['/this-page-does-not-exist', 'Page not found'],
 ];
 
 const getIn = (obj, path) => path.reduce((o, k) => o?.[k], obj);

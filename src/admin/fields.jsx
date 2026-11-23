@@ -40,6 +40,40 @@ const LABELS = {
   images: 'Images',
   paragraphs: 'Paragraphs',
   lines: 'Lines',
+  video: 'Smoke video (inside the 44)',
+  image: 'Photo',
+  name: 'Name',
+  description: 'Description',
+  price: 'Price',
+  title: 'Title',
+  text: 'Text',
+  heading: 'Heading',
+  headings: 'Column titles',
+  addressLabel: 'Address label',
+  bookLabel: 'Booking label',
+  // buttons
+  seeMenu: 'See the menu',
+  fullKitchenMenu: 'Full kitchen menu',
+  directions: 'Directions (long)',
+  directionsShort: 'Directions (short, footer)',
+  call: 'Call (before the phone number, mobile menu)',
+  callNow: 'Call now',
+  bookOnline: 'Book online',
+  backToTop: 'Back to top',
+  // booking form
+  choose: 'Time placeholder',
+  noTimes: 'When no times are left today',
+  submit: 'Send button',
+  sending: 'While sending',
+  note: 'Small line under the button',
+  chooseTimeError: 'Error: no time chosen',
+  sendError: 'Error: could not send',
+  sentLabel: 'After sending: small line',
+  sentTitle: 'After sending: title',
+  tableFor: 'After sending: table line',
+  sentText: 'After sending: text',
+  done: 'Done button',
+  button: 'Button',
 };
 
 const HINTS = {
@@ -48,15 +82,25 @@ const HINTS = {
   close: 'Can be after midnight, e.g. 04:00.',
   rows: 'Example: Hookah · Cocktails · Kitchen',
   price: 'Leave empty for items without a price (they show as tags).',
+  video: 'MP4 file. It plays inside each 4 on the first screen (the second 4 starts 5 seconds later).',
+  link: 'A page of this site, e.g. /menu/kitchen',
+  note: '{open} and {close} are replaced with the opening hours.',
+  sentTitle: '{name} is replaced with the guest’s first name.',
+  tableFor: '{guests} is replaced with the number of guests.',
+  sentText: '{phone} is replaced with the lounge phone number.',
+  call: 'The phone number is added after this word.',
 };
 
 const HIDDEN = new Set([]); // keys never shown as fields
 const IMAGE_KEYS = new Set(['image']);
+const VIDEO_KEYS = new Set(['video']);
 const IMAGE_LISTS = new Set(['images', 'photos']);
 const FIXED_LISTS = new Set([]); // lists whose length is tied to the layout
 
 const humanize = (k) => String(k).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
-export const labelFor = (k) => LABELS[k] ?? humanize(k);
+// labels that depend on where the key sits
+const PATH_LABELS = { 'hours.label': 'Days line (e.g. Open daily)', 'general.nav': 'Menu bar links' };
+export const labelFor = (k, path) => (path && PATH_LABELS[path.join('.')]) ?? LABELS[k] ?? humanize(k);
 
 const stripHtml = (s) => String(s).replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -100,17 +144,20 @@ export function Field({ k, parentKey, value, path, onChange }) {
   if (value && typeof value === 'object') {
     return (
       <fieldset className="adm-group">
-        <legend>{labelFor(k)}</legend>
+        <legend>{labelFor(k, path)}</legend>
         <ObjectEditor value={value} path={path} onChange={onChange} />
       </fieldset>
     );
   }
+  const video = VIDEO_KEYS.has(k);
   const image = IMAGE_KEYS.has(k) || IMAGE_LISTS.has(parentKey);
   const inList = typeof k === 'number';
   return (
     <div className="adm-field">
-      {!inList && <label className="adm-label">{labelFor(k)}</label>}
-      {image ? (
+      {!inList && <label className="adm-label">{labelFor(k, path)}</label>}
+      {video ? (
+        <ImageField value={value} onChange={onChange} video />
+      ) : image ? (
         <ImageField value={value} onChange={onChange} />
       ) : (
         <TextField value={value ?? ''} html={isHtml(k, parentKey, path)} onChange={onChange} />
@@ -221,7 +268,7 @@ function ListEditor({ k, value, path, onChange }) {
 
 // ---- images ----
 
-export function ImageField({ value, onChange }) {
+export function ImageField({ value, onChange, video = false }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [library, setLibrary] = useState(false);
@@ -250,28 +297,34 @@ export function ImageField({ value, onChange }) {
       }}
     >
       <div className="adm-thumb">
-        {value ? <img src={asset(value)} alt="" /> : <span>Template default</span>}
+        {value ? (
+          video ? <video src={asset(value)} muted loop autoPlay playsInline /> : <img src={asset(value)} alt="" />
+        ) : (
+          <span>None</span>
+        )}
       </div>
       <div className="adm-image-side">
         <input
           className="adm-input"
           type="text"
           value={value}
-          placeholder="Template default"
+          placeholder="None"
           onChange={(e) => onChange(e.target.value)}
         />
         <div className="adm-image-buttons">
           <button type="button" disabled={busy} onClick={() => fileRef.current.click()}>
             {busy ? 'Uploading…' : 'Upload'}
           </button>
-          <button type="button" onClick={() => setLibrary(true)}>Library</button>
+          {!video && (
+            <button type="button" onClick={() => setLibrary(true)}>Library</button>
+          )}
           {value && (
             <button type="button" onClick={() => onChange('')}>Clear</button>
           )}
           <input
             ref={fileRef}
             type="file"
-            accept="image/*"
+            accept={video ? 'video/mp4,video/webm' : 'image/*'}
             style={{ display: "none" }}
             onChange={(e) => {
               upload(e.target.files[0]);

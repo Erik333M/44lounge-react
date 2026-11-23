@@ -5,7 +5,7 @@ import { gsap, reveals, useScene } from '../lib/motion.js';
 import { Arrow, Img, Split } from '../components/ui.jsx';
 
 export default function About() {
-  const { about, hours, menu } = useContent();
+  const { about, hours, menu, buttons } = useContent();
   const ref = useRef(null);
   const count = (s) => menu[s].categories.reduce((n, c) => n + c.items.length, 0);
 
@@ -55,7 +55,7 @@ export default function About() {
             ))}
             <p>
               <Link className="btn" to="/menu">
-                See the menu <Arrow />
+                {buttons.seeMenu} <Arrow />
               </Link>
             </p>
           </div>

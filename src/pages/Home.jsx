@@ -20,7 +20,7 @@ import { BookButton } from '../components/Booking.jsx';
    8. Gallery strip drifts sideways with scroll. */
 
 function Hero() {
-  const { general, home } = useContent();
+  const { general, home, buttons } = useContent();
   const { hero } = home;
   const ref = useRef(null);
   // shared with the canvas: zoom level for the fly-through, and whether the smoke should play
@@ -95,7 +95,7 @@ function Hero() {
           </h1>
           <div className="hero__actions">
             <Link className="btn btn--accent" to="/menu">
-              See the menu <Arrow />
+              {buttons.seeMenu} <Arrow />
             </Link>
             <BookButton />
           </div>
@@ -280,7 +280,7 @@ function Statement() {
 }
 
 function Dishes() {
-  const { home } = useContent();
+  const { home, buttons } = useContent();
   const { dishes } = home;
   const ref = useRef(null);
   const [active, setActive] = useState(-1);
@@ -322,7 +322,7 @@ function Dishes() {
             <Split text={dishes.title} />
           </h2>
           <Link className="btn" to="/menu/kitchen" data-reveal="fade">
-            Full kitchen menu <Arrow />
+            {buttons.fullKitchenMenu} <Arrow />
           </Link>
         </div>
         <ul className="dishes__list" data-reveal="list">

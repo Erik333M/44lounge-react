@@ -17,6 +17,7 @@ const MAX_UPLOAD = 25 * 1024 * 1024;
 const UPLOAD_TYPES = new Set([
   '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif',
   '.woff', '.woff2', '.ttf', '.otf',
+  '.mp4', '.webm',
 ]);
 
 const readBody = (req, limit) =>

@@ -171,6 +171,8 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
       };
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // nothing to draw while the hero has no size (e.g. inside a hidden admin preview)
+      if (!canvas.width || !canvas.height || !off.width || !off.height) return;
 
       digits.forEach((d, i) => {
         const font = `700 ${d.size}px ${family}`;

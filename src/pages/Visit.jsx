@@ -5,7 +5,7 @@ import { Arrow, Img, OpenStatus, Split, telHref } from '../components/ui.jsx';
 import { BookButton } from '../components/Booking.jsx';
 
 export default function Visit() {
-  const { visit, general, hours } = useContent();
+  const { visit, general, hours, buttons } = useContent();
   const ref = useRef(null);
   useScene(ref, ({ motion }) => motion && reveals(ref.current), []);
 
@@ -27,11 +27,11 @@ export default function Visit() {
       <div className="wrap visit-grid">
         <div className="visit-info" data-reveal="list">
           <div className="visit-block">
-            <span className="eyebrow">Address</span>
+            <span className="eyebrow">{visit.addressLabel}</span>
             <p className="visit-block__value">{general.address}</p>
             <div className="visit-block__links">
               <a className="btn btn--small" href={general.mapLink} target="_blank" rel="noreferrer">
-                Get directions <Arrow />
+                {buttons.directions} <Arrow />
               </a>
             </div>
           </div>
@@ -43,14 +43,14 @@ export default function Visit() {
             <OpenStatus withTime />
           </div>
           <div className="visit-block">
-            <span className="eyebrow">Book a table</span>
+            <span className="eyebrow">{visit.bookLabel}</span>
             <p className="visit-block__value">
               <a href={telHref(general.phone)}>{general.phone}</a>
             </p>
             <div className="visit-block__links">
-              <BookButton className="btn btn--small">Book online</BookButton>
+              <BookButton className="btn btn--small">{buttons.bookOnline}</BookButton>
               <a className="btn btn--small" href={telHref(general.phone)}>
-                Call now
+                {buttons.callNow}
               </a>
               <a className="btn btn--small" href={general.instagram} target="_blank" rel="noreferrer">
                 Instagram

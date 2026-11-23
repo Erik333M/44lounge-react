@@ -24,6 +24,9 @@ const toMin = (hhmm) => {
   const [h, m] = String(hhmm).split(':').map(Number);
   return (h || 0) * 60 + (m || 0);
 };
+// fills {placeholders} in admin-editable texts
+const fill = (text, vars) => String(text).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+
 const fmt = (min) => `${String(Math.floor(min / 60) % 24).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
 const addDays = (iso, n) => {
   const d = new Date(`${iso}T12:00:00Z`);
@@ -44,7 +47,7 @@ function timeSlots(open, close, date) {
 }
 
 function BookingModal({ onClose }) {
-  const { general, hours } = useContent();
+  const { general, hours, booking: t } = useContent();
   const today = yerevanToday();
   const [form, setForm] = useState({ name: '', phone: '+374 ', guests: 2, date: today, time: '', website: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
@@ -72,7 +75,7 @@ function BookingModal({ onClose }) {
   const submit = async (e) => {
     e.preventDefault();
     if (!form.time) {
-      setError('Please choose a time.');
+      setError(t.chooseTimeError);
       setStatus('error');
       return;
     }
@@ -85,7 +88,7 @@ function BookingModal({ onClose }) {
         body: JSON.stringify(form),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Could not send the booking right now. Please call us.');
+      if (!res.ok) throw new Error(data.error || t.sendError);
       setStatus('sent');
     } catch (err) {
       setError(err.message);
@@ -109,37 +112,37 @@ function BookingModal({ onClose }) {
 
         {status === 'sent' ? (
           <div className="booking__done">
-            <p className="eyebrow eyebrow--accent">Request sent</p>
+            <p className="eyebrow eyebrow--accent">{t.sentLabel}</p>
             <h2 className="display booking__title" id="booking-title">
-              See you soon, {form.name.split(' ')[0]}
+              {fill(t.sentTitle, { name: form.name.trim().split(' ')[0] })}
             </h2>
             <p className="booking__summary">
-              Table for {form.guests} · {dateLabel} · {form.time}
+              {fill(t.tableFor, { guests: form.guests })} · {dateLabel} · {form.time}
             </p>
-            <p className="muted">Your request went straight to our team. If anything changes, call us at {general.phone}.</p>
+            <p className="muted">{fill(t.sentText, { phone: general.phone })}</p>
             <button type="button" className="btn" onClick={onClose}>
-              Done
+              {t.done}
             </button>
           </div>
         ) : (
           <form className="booking__form" onSubmit={submit} noValidate>
             <p className="eyebrow eyebrow--accent">{general.brand}</p>
             <h2 className="display booking__title" id="booking-title">
-              Book a table
+              {t.title}
             </h2>
 
             <label className="field">
-              <span>Name</span>
+              <span>{t.name}</span>
               <input ref={firstField} type="text" autoComplete="name" required minLength={2} maxLength={60} value={form.name} onChange={set('name')} />
             </label>
 
             <label className="field">
-              <span>Phone number</span>
+              <span>{t.phone}</span>
               <input type="tel" autoComplete="tel" inputMode="tel" required maxLength={30} value={form.phone} onChange={set('phone')} />
             </label>
 
             <div className="field">
-              <span>Guests</span>
+              <span>{t.guests}</span>
               <div className="stepper">
                 <button type="button" aria-label="Fewer guests" onClick={() => setForm((f) => ({ ...f, guests: Math.max(1, f.guests - 1) }))}>
                   −
@@ -153,14 +156,14 @@ function BookingModal({ onClose }) {
 
             <div className="field-row">
               <label className="field">
-                <span>Date</span>
+                <span>{t.date}</span>
                 <input type="date" required min={today} max={addDays(today, 60)} value={form.date} onChange={set('date')} />
               </label>
               <label className="field">
-                <span>Time</span>
+                <span>{t.time}</span>
                 <select required value={form.time} onChange={set('time')}>
                   <option value="" disabled>
-                    {slots.length ? 'Choose' : 'No times left today'}
+                    {slots.length ? t.choose : t.noTimes}
                   </option>
                   {slots.map((t) => (
                     <option key={t} value={t}>
@@ -182,10 +185,10 @@ function BookingModal({ onClose }) {
             )}
 
             <button type="submit" className="btn booking__submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Sending…' : 'Send booking request'}
+              {status === 'sending' ? t.sending : t.submit}
             </button>
             <p className="booking__note muted">
-              Open {hours.open}–{hours.close} daily · or call <a href={telHref(general.phone)}>{general.phone}</a>
+              {fill(t.note, { open: hours.open, close: hours.close })} <a href={telHref(general.phone)}>{general.phone}</a>
             </p>
           </form>
         )}

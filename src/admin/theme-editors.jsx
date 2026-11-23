@@ -6,7 +6,7 @@ import { uploadFile } from './api.js';
 
 // The template's original values, for the "Reset" buttons.
 export const ORIGINAL_THEME = {
-  colors: { background: '#0e0c0b', surface: '#1a1614', text: '#f2eadf', muted: '#9d9189', accent: '#ff6b3d', brass: '#c7ad88' },
+  colors: { background: '#0e0c0b', surface: '#1a1614', text: '#f2eadf', muted: '#9d9189', accent: '#fa3601', brass: '#c7ad88' },
   fonts: { display: 'Unbounded', body: 'Manrope', mono: 'JetBrains Mono' },
 };
 
