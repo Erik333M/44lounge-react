@@ -6,7 +6,7 @@ import { Arrow, Img, Split } from '../components/ui.jsx';
 
 export const MENU_SECTIONS = ['hookah', 'kitchen', 'bar'];
 
-const isCutout = (src) => /\.png$/i.test(src || ''); // dish photos with transparent background sit on the plate as-is
+const isCutout = (src) => /\.(png|webp)$/i.test(src || ''); // dish photos with transparent background sit on the plate as-is
 
 /* Plate carousel: one round plate per category. The centre plate is large and lit,
    neighbours peek in smaller at the sides. Swipe / drag, arrows, keyboard or a tap on a side plate. */

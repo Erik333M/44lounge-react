@@ -100,37 +100,37 @@
           "name": "44 burger",
           "description": "Burger",
           "price": "4,400 AMD",
-          "image": "images/menu/44-burger.jpg"
+          "image": "images/menu/44-burger.webp"
         },
         {
           "name": "44 Salad",
           "description": "Salad",
           "price": "4,400 AMD",
-          "image": "images/menu/44-salad.jpg"
+          "image": "images/menu/44-salad.webp"
         },
         {
           "name": "Pepperoni pizza",
           "description": "Pizza",
           "price": "3,800 AMD",
-          "image": "images/menu/pepperoni-pizza.jpg"
+          "image": "images/menu/pepperoni-pizza.webp"
         },
         {
           "name": "Philadelphia sandwich",
           "description": "Sandwich",
           "price": "3,400 AMD",
-          "image": "images/menu/philadelphia-sandwich.jpg"
+          "image": "images/menu/philadelphia-sandwich.webp"
         },
         {
           "name": "Pesto pasta",
           "description": "Pasta",
           "price": "3,600 AMD",
-          "image": "images/menu/pesto-pasta.jpg"
+          "image": "images/menu/pesto-pasta.webp"
         },
         {
           "name": "Beef medallions",
           "description": "Main dish",
           "price": "4,800 AMD",
-          "image": "images/menu/beef-medallions.jpg"
+          "image": "images/menu/beef-medallions.webp"
         }
       ]
     },
@@ -277,34 +277,34 @@
               "name": "Caesar chicken",
               "description": "",
               "price": "3,000 AMD",
-              "image": "images/menu/caesar-chicken.jpg"
+              "image": "images/menu/caesar-chicken.webp"
             },
             {
               "name": "Caesar shrimp salad",
               "description": "",
               "price": "3,500 AMD",
-              "image": "images/menu/caesar-shrimp-salad.jpg"
+              "image": "images/menu/caesar-shrimp-salad.webp"
             },
             {
               "name": "Greek salad",
               "description": "onion, feta cheese",
               "price": "2,800 AMD",
-              "image": "images/menu/greek-salad.jpg"
+              "image": "images/menu/greek-salad.webp"
             },
             {
               "name": "44 Salad",
               "description": "",
               "price": "4,400 AMD",
-              "image": "images/menu/44-salad.jpg"
+              "image": "images/menu/44-salad.webp"
             },
             {
               "name": "Falafel salad",
               "description": "",
               "price": "3,200 AMD",
-              "image": "images/menu/falafel-salad.jpg"
+              "image": "images/menu/falafel-salad.webp"
             }
           ],
-          "image": "images/menu/44-salad.jpg"
+          "image": "images/menu/44-salad.webp"
         },
         {
           "title": "Pizza",
@@ -313,22 +313,22 @@
               "name": "Margarita",
               "description": "Mozzarella cheese, tomato sauce, basil",
               "price": "3,400 AMD",
-              "image": "images/menu/margarita.jpg"
+              "image": "images/menu/margarita.webp"
             },
             {
               "name": "Pepperoni pizza",
               "description": "",
               "price": "3,800 AMD",
-              "image": "images/menu/pepperoni-pizza.jpg"
+              "image": "images/menu/pepperoni-pizza.webp"
             },
             {
               "name": "Bacon pizza",
               "description": "",
               "price": "4,400 AMD",
-              "image": "images/menu/bacon-pizza.jpg"
+              "image": "images/menu/bacon-pizza.webp"
             }
           ],
-          "image": "images/menu/pepperoni-pizza.jpg"
+          "image": "images/menu/pepperoni-pizza.webp"
         },
         {
           "title": "Sandwiches",
@@ -337,37 +337,37 @@
               "name": "Crispy sandwich",
               "description": "",
               "price": "3,100 AMD",
-              "image": "images/menu/crispy-sandwich.jpg"
+              "image": "images/menu/crispy-sandwich.webp"
             },
             {
               "name": "Fajita",
               "description": "",
               "price": "3,000 AMD",
-              "image": "images/menu/fajita.jpg"
+              "image": "images/menu/fajita.webp"
             },
             {
               "name": "Mexicano",
               "description": "",
               "price": "3,000 AMD",
-              "image": "images/menu/mexicano.jpg"
+              "image": "images/menu/mexicano.webp"
             },
             {
               "name": "Philadelphia sandwich",
               "description": "",
               "price": "3,400 AMD",
-              "image": "images/menu/philadelphia-sandwich.jpg"
+              "image": "images/menu/philadelphia-sandwich.webp"
             },
             {
               "name": "Club sandwich",
               "description": "",
               "price": "3,500 AMD",
-              "image": "images/menu/club-sandwich.jpg"
+              "image": "images/menu/club-sandwich.webp"
             },
             {
               "name": "Chicken quesadilla",
               "description": "",
               "price": "4,000 AMD",
-              "image": "images/menu/chicken-quesadilla.jpg"
+              "image": "images/menu/chicken-quesadilla.webp"
             },
             {
               "name": "Chicken wrap",
@@ -380,29 +380,29 @@
               "price": "3,100 AMD"
             }
           ],
-          "image": "images/menu/club-sandwich.jpg"
+          "image": "images/menu/club-sandwich.webp"
         },
         {
           "title": "Burgers",
-          "image": "images/menu/44-burger.jpg",
+          "image": "images/menu/44-burger.webp",
           "items": [
             {
               "name": "Crispy burger",
               "description": "",
               "price": "3,200 AMD",
-              "image": "images/menu/crispy-burger.jpg"
+              "image": "images/menu/crispy-burger.webp"
             },
             {
               "name": "Classic cheese burger",
               "description": "",
               "price": "3,400 AMD",
-              "image": "images/menu/classic-cheese-burger.jpg"
+              "image": "images/menu/classic-cheese-burger.webp"
             },
             {
               "name": "44 burger",
               "description": "",
               "price": "4,400 AMD",
-              "image": "images/menu/44-burger.jpg"
+              "image": "images/menu/44-burger.webp"
             },
             {
               "name": "Chicken burger",
@@ -418,19 +418,19 @@
               "name": "Cordon Bleu",
               "description": "Chicken breast, ham, mozzarella, french fries",
               "price": "3,800 AMD",
-              "image": "images/menu/cordon-bleu.jpg"
+              "image": "images/menu/cordon-bleu.webp"
             },
             {
               "name": "Tapas chicken",
               "description": "",
               "price": "4,000 AMD",
-              "image": "images/menu/tapas-chicken.jpg"
+              "image": "images/menu/tapas-chicken.webp"
             },
             {
               "name": "Fajita plate",
               "description": "",
               "price": "3,600 AMD",
-              "image": "images/menu/fajita-plate.jpg"
+              "image": "images/menu/fajita-plate.webp"
             },
             {
               "name": "Beef stroganoff",
@@ -442,28 +442,28 @@
               "name": "Beef medallions",
               "description": "",
               "price": "4,800 AMD",
-              "image": "images/menu/beef-medallions.jpg"
+              "image": "images/menu/beef-medallions.webp"
             },
             {
               "name": "Chicken medallions",
               "description": "",
               "price": "3,800 AMD",
-              "image": "images/menu/chicken-medallions.jpg"
+              "image": "images/menu/chicken-medallions.webp"
             },
             {
               "name": "Chicken with lemon",
               "description": "",
               "price": "3,600 AMD",
-              "image": "images/menu/chicken-with-lemon.jpg"
+              "image": "images/menu/chicken-with-lemon.webp"
             },
             {
               "name": "Beer set",
               "description": "",
               "price": "7,500 AMD",
-              "image": "images/menu/beer-set.jpg"
+              "image": "images/menu/beer-set.webp"
             }
           ],
-          "image": "images/menu/beef-medallions.jpg"
+          "image": "images/menu/beef-medallions.webp"
         },
         {
           "title": "Appetizers",
@@ -477,25 +477,25 @@
               "name": "Garlic pesto bread",
               "description": "",
               "price": "1,200 AMD",
-              "image": "images/menu/garlic-pesto-bread.jpg"
+              "image": "images/menu/garlic-pesto-bread.webp"
             },
             {
               "name": "Cheese sticks",
               "description": "",
               "price": "2,600 AMD",
-              "image": "images/menu/cheese-sticks.jpg"
+              "image": "images/menu/cheese-sticks.webp"
             },
             {
               "name": "Fried calamari",
               "description": "",
               "price": "2,600 AMD",
-              "image": "images/menu/fried-calamari.jpg"
+              "image": "images/menu/fried-calamari.webp"
             },
             {
               "name": "Onion rings",
               "description": "",
               "price": "2,000 AMD",
-              "image": "images/menu/onion-rings.jpg"
+              "image": "images/menu/onion-rings.webp"
             },
             {
               "name": "Shrimp mozzarella",
@@ -503,7 +503,7 @@
               "price": "3,000 AMD"
             }
           ],
-          "image": "images/menu/cheese-sticks.jpg"
+          "image": "images/menu/cheese-sticks.webp"
         },
         {
           "title": "Pasta",
@@ -512,28 +512,28 @@
               "name": "Bacon pasta",
               "description": "",
               "price": "3,200 AMD",
-              "image": "images/menu/bacon-pasta.jpg"
+              "image": "images/menu/bacon-pasta.webp"
             },
             {
               "name": "Pasta Alfredo",
               "description": "",
               "price": "3,200 AMD",
-              "image": "images/menu/pasta-alfredo.jpg"
+              "image": "images/menu/pasta-alfredo.webp"
             },
             {
               "name": "Penne Arrabiata",
               "description": "Penne, tomato sauce, chili pepper, basil, parmesan",
               "price": "2,900 AMD",
-              "image": "images/menu/penne-arrabiata.jpg"
+              "image": "images/menu/penne-arrabiata.webp"
             },
             {
               "name": "Pesto pasta",
               "description": "",
               "price": "3,600 AMD",
-              "image": "images/menu/pesto-pasta.jpg"
+              "image": "images/menu/pesto-pasta.webp"
             }
           ],
-          "image": "images/menu/pesto-pasta.jpg"
+          "image": "images/menu/pesto-pasta.webp"
         },
         {
           "title": "Sides",
@@ -595,7 +595,7 @@
               "name": "Paklava with ice cream",
               "description": "",
               "price": "2,600 AMD",
-              "image": "images/menu/paklava-ice-cream.jpg"
+              "image": "images/menu/paklava-ice-cream.webp"
             },
             {
               "name": "Watermelon",
@@ -623,7 +623,7 @@
               "price": "1,500 AMD"
             }
           ],
-          "image": "images/menu/paklava-ice-cream.jpg"
+          "image": "images/menu/paklava-ice-cream.webp"
         }
       ]
     },
