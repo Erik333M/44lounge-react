@@ -1,0 +1,1635 @@
+{
+  "theme": {
+    "colors": {
+      "background": "#0e0c0b",
+      "surface": "#1a1614",
+      "text": "#f2eadf",
+      "muted": "#9d9189",
+      "accent": "#fa3601",
+      "brass": "#c7ad88"
+    },
+    "fonts": {
+      "display": "Unbounded",
+      "body": "Manrope",
+      "mono": "JetBrains Mono"
+    },
+    "customFonts": []
+  },
+  "general": {
+    "brand": "44 Lounge",
+    "tagline": "Hookah · Kitchen · Bar",
+    "nav": {
+      "home": "Home",
+      "menu": "Menu",
+      "about": "About",
+      "visit": "Visit"
+    },
+    "reserveLabel": "Book a table",
+    "phone": "+374 41 34 44 41",
+    "address": "2/5 Abovyan Street, Yerevan",
+    "mapLink": "https://maps.google.com/?q=2/5+Abovyan+Street,+Yerevan",
+    "coordinates": "40.1812° N · 44.5131° E",
+    "instagram": "https://www.instagram.com/44lounge_bar/",
+    "instagramHandle": "@44lounge_bar",
+    "facebook": "https://www.facebook.com/44loungeyvn"
+  },
+  "hours": {
+    "label": "Open daily",
+    "open": "12:00",
+    "close": "04:00",
+    "openNow": "Open now",
+    "closedNow": "Closed now"
+  },
+  "home": {
+    "hero": {
+      "image": "images/venue/sign-smoke.jpg",
+      "eyebrow": "Hookah lounge in the heart of Yerevan",
+      "title": "Where evenings and talks are longer.",
+      "scrollHint": "Scroll",
+      "video": "videos/smoke.mp4"
+    },
+    "intro": "Your daily dose of tasty hookah, delicious cuisine and stunning drinks in a cozy atmosphere.",
+    "marquee": {
+      "rows": [
+        "Hookah · Cocktails · Kitchen",
+        "Late nights · Good company · Neon"
+      ],
+      "images": [
+        "images/venue/red-cocktail.jpg",
+        "images/venue/hookah-guest-sunglasses.jpg",
+        "images/venue/martini.jpg",
+        "images/venue/burnt-orange-highball.jpg",
+        "images/venue/orange-cocktail.jpg",
+        "images/venue/hookah-smoke-man.jpg"
+      ]
+    },
+    "statement": {
+      "image": "images/venue/neon-hookah-guest.jpg",
+      "lines": [
+        "Where it feels",
+        "like home."
+      ]
+    },
+    "worlds": {
+      "title": "Three menus, one evening",
+      "eyebrow": "Choose where to start",
+      "items": [
+        {
+          "title": "Hookah",
+          "text": "Seven tobacco lines from Al Fakher to Tangiers, on juice, milk, wine or a fruit bowl.",
+          "image": "images/venue/three-hookahs.jpg",
+          "link": "/menu/hookah"
+        },
+        {
+          "title": "Kitchen",
+          "text": "Salads, pizza, burgers, pasta and grill plates, served until late.",
+          "image": "images/venue/dinner-club-sandwich.jpg",
+          "link": "/menu/kitchen"
+        },
+        {
+          "title": "Bar",
+          "text": "House signature cocktails, the classics, whisky, wine and fresh lemonades.",
+          "image": "images/venue/bartender-pour.jpg",
+          "link": "/menu/bar"
+        }
+      ]
+    },
+    "dishes": {
+      "title": "Popular dishes",
+      "items": [
+        {
+          "name": "44 burger",
+          "description": "Burger",
+          "price": "4,400 AMD",
+          "image": "images/menu/44-burger.jpg"
+        },
+        {
+          "name": "44 Salad",
+          "description": "Salad",
+          "price": "4,400 AMD",
+          "image": "images/menu/44-salad.jpg"
+        },
+        {
+          "name": "Pepperoni pizza",
+          "description": "Pizza",
+          "price": "3,800 AMD",
+          "image": "images/menu/pepperoni-pizza.jpg"
+        },
+        {
+          "name": "Philadelphia sandwich",
+          "description": "Sandwich",
+          "price": "3,400 AMD",
+          "image": "images/menu/philadelphia-sandwich.jpg"
+        },
+        {
+          "name": "Pesto pasta",
+          "description": "Pasta",
+          "price": "3,600 AMD",
+          "image": "images/menu/pesto-pasta.jpg"
+        },
+        {
+          "name": "Beef medallions",
+          "description": "Main dish",
+          "price": "4,800 AMD",
+          "image": "images/menu/beef-medallions.jpg"
+        }
+      ]
+    },
+    "gallery": {
+      "title": "Follow the glow",
+      "photos": [
+        "images/venue/bar-counter.jpg",
+        "images/venue/monkeys-mural.jpg",
+        "images/venue/hookah-smoke-man.jpg",
+        "images/venue/gin-shelf.jpg",
+        "images/venue/face-sculpture.jpg",
+        "images/venue/painting-lounge.jpg",
+        "images/venue/red-cocktail.jpg",
+        "images/venue/hookah-guest-sunglasses.jpg",
+        "images/venue/orange-cocktail.jpg"
+      ]
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "intro": "Prices in Armenian dram (AMD).",
+    "hookah": {
+      "label": "Hookah",
+      "image": "images/venue/three-hookahs.jpg",
+      "categories": [
+        {
+          "title": "Hookah",
+          "items": [
+            {
+              "name": "Al Fakher",
+              "description": "",
+              "price": "5,000 AMD"
+            },
+            {
+              "name": "Serbetli",
+              "description": "",
+              "price": "6,000 AMD"
+            },
+            {
+              "name": "Daily Hookah",
+              "description": "",
+              "price": "7,000 AMD"
+            },
+            {
+              "name": "Darkside",
+              "description": "",
+              "price": "8,000 AMD"
+            },
+            {
+              "name": "Blackburn",
+              "description": "",
+              "price": "8,000 AMD"
+            },
+            {
+              "name": "Sarma",
+              "description": "",
+              "price": "8,000 AMD"
+            },
+            {
+              "name": "Tangiers",
+              "description": "",
+              "price": "9,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/three-hookahs.jpg"
+        },
+        {
+          "title": "Bowl base",
+          "items": [
+            {
+              "name": "Juice",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Milk",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Wine",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Champagne",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Grapefruit bowl",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Pineapple bowl",
+              "description": "",
+              "price": ""
+            }
+          ],
+          "image": "images/venue/plate/hookah-smoke-man.jpg"
+        },
+        {
+          "title": "Premium base",
+          "items": [
+            {
+              "name": "Absenta",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Cognac",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Whiskey",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Vodka",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Rum",
+              "description": "",
+              "price": ""
+            },
+            {
+              "name": "Orange bowl",
+              "description": "",
+              "price": ""
+            }
+          ],
+          "image": "images/venue/plate/hookah-guest-sunglasses.jpg"
+        }
+      ]
+    },
+    "kitchen": {
+      "label": "Kitchen",
+      "image": "images/venue/dinner-club-sandwich.jpg",
+      "categories": [
+        {
+          "title": "Salads",
+          "items": [
+            {
+              "name": "Caesar chicken",
+              "description": "",
+              "price": "3,000 AMD",
+              "image": "images/menu/caesar-chicken.jpg"
+            },
+            {
+              "name": "Caesar shrimp salad",
+              "description": "",
+              "price": "3,500 AMD",
+              "image": "images/menu/caesar-shrimp-salad.jpg"
+            },
+            {
+              "name": "Greek salad",
+              "description": "onion, feta cheese",
+              "price": "2,800 AMD",
+              "image": "images/menu/greek-salad.jpg"
+            },
+            {
+              "name": "44 Salad",
+              "description": "",
+              "price": "4,400 AMD",
+              "image": "images/menu/44-salad.jpg"
+            },
+            {
+              "name": "Falafel salad",
+              "description": "",
+              "price": "3,200 AMD",
+              "image": "images/menu/falafel-salad.jpg"
+            }
+          ],
+          "image": "images/menu/44-salad.jpg"
+        },
+        {
+          "title": "Pizza",
+          "items": [
+            {
+              "name": "Margarita",
+              "description": "Mozzarella cheese, tomato sauce, basil",
+              "price": "3,400 AMD",
+              "image": "images/menu/margarita.jpg"
+            },
+            {
+              "name": "Pepperoni pizza",
+              "description": "",
+              "price": "3,800 AMD",
+              "image": "images/menu/pepperoni-pizza.jpg"
+            },
+            {
+              "name": "Bacon pizza",
+              "description": "",
+              "price": "4,400 AMD",
+              "image": "images/menu/bacon-pizza.jpg"
+            }
+          ],
+          "image": "images/menu/pepperoni-pizza.jpg"
+        },
+        {
+          "title": "Sandwiches",
+          "items": [
+            {
+              "name": "Crispy sandwich",
+              "description": "",
+              "price": "3,100 AMD",
+              "image": "images/menu/crispy-sandwich.jpg"
+            },
+            {
+              "name": "Fajita",
+              "description": "",
+              "price": "3,000 AMD",
+              "image": "images/menu/fajita.jpg"
+            },
+            {
+              "name": "Mexicano",
+              "description": "",
+              "price": "3,000 AMD",
+              "image": "images/menu/mexicano.jpg"
+            },
+            {
+              "name": "Philadelphia sandwich",
+              "description": "",
+              "price": "3,400 AMD",
+              "image": "images/menu/philadelphia-sandwich.jpg"
+            },
+            {
+              "name": "Club sandwich",
+              "description": "",
+              "price": "3,500 AMD",
+              "image": "images/menu/club-sandwich.jpg"
+            },
+            {
+              "name": "Chicken quesadilla",
+              "description": "",
+              "price": "4,000 AMD",
+              "image": "images/menu/chicken-quesadilla.jpg"
+            },
+            {
+              "name": "Chicken wrap",
+              "description": "Grilled chicken breast, mixed greens, sour cream, tomato, cucumber",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Zinger sandwich",
+              "description": "",
+              "price": "3,100 AMD"
+            }
+          ],
+          "image": "images/menu/club-sandwich.jpg"
+        },
+        {
+          "title": "Burgers",
+          "image": "images/menu/44-burger.jpg",
+          "items": [
+            {
+              "name": "Crispy burger",
+              "description": "",
+              "price": "3,200 AMD",
+              "image": "images/menu/crispy-burger.jpg"
+            },
+            {
+              "name": "Classic cheese burger",
+              "description": "",
+              "price": "3,400 AMD",
+              "image": "images/menu/classic-cheese-burger.jpg"
+            },
+            {
+              "name": "44 burger",
+              "description": "",
+              "price": "4,400 AMD",
+              "image": "images/menu/44-burger.jpg"
+            },
+            {
+              "name": "Chicken burger",
+              "description": "Chicken filet, cheese sauce, mayo sauce, tomato, jalapeño",
+              "price": "3,200 AMD"
+            }
+          ]
+        },
+        {
+          "title": "Main dishes",
+          "items": [
+            {
+              "name": "Cordon Bleu",
+              "description": "Chicken breast, ham, mozzarella, french fries",
+              "price": "3,800 AMD",
+              "image": "images/menu/cordon-bleu.jpg"
+            },
+            {
+              "name": "Tapas chicken",
+              "description": "",
+              "price": "4,000 AMD",
+              "image": "images/menu/tapas-chicken.jpg"
+            },
+            {
+              "name": "Fajita plate",
+              "description": "",
+              "price": "3,600 AMD",
+              "image": "images/menu/fajita-plate.jpg"
+            },
+            {
+              "name": "Beef stroganoff",
+              "description": "",
+              "price": "4,000 AMD",
+              "image": "images/menu/beef-stroganoff.jpg"
+            },
+            {
+              "name": "Beef medallions",
+              "description": "",
+              "price": "4,800 AMD",
+              "image": "images/menu/beef-medallions.jpg"
+            },
+            {
+              "name": "Chicken medallions",
+              "description": "",
+              "price": "3,800 AMD",
+              "image": "images/menu/chicken-medallions.jpg"
+            },
+            {
+              "name": "Chicken with lemon",
+              "description": "",
+              "price": "3,600 AMD",
+              "image": "images/menu/chicken-with-lemon.jpg"
+            },
+            {
+              "name": "Beer set",
+              "description": "",
+              "price": "7,500 AMD",
+              "image": "images/menu/beer-set.jpg"
+            }
+          ],
+          "image": "images/menu/beef-medallions.jpg"
+        },
+        {
+          "title": "Appetizers",
+          "items": [
+            {
+              "name": "Cheese assortment",
+              "description": "",
+              "price": "5,500 AMD"
+            },
+            {
+              "name": "Garlic pesto bread",
+              "description": "",
+              "price": "1,200 AMD",
+              "image": "images/menu/garlic-pesto-bread.jpg"
+            },
+            {
+              "name": "Cheese sticks",
+              "description": "",
+              "price": "2,600 AMD",
+              "image": "images/menu/cheese-sticks.jpg"
+            },
+            {
+              "name": "Fried calamari",
+              "description": "",
+              "price": "2,600 AMD",
+              "image": "images/menu/fried-calamari.jpg"
+            },
+            {
+              "name": "Onion rings",
+              "description": "",
+              "price": "2,000 AMD",
+              "image": "images/menu/onion-rings.jpg"
+            },
+            {
+              "name": "Shrimp mozzarella",
+              "description": "",
+              "price": "3,000 AMD"
+            }
+          ],
+          "image": "images/menu/cheese-sticks.jpg"
+        },
+        {
+          "title": "Pasta",
+          "items": [
+            {
+              "name": "Bacon pasta",
+              "description": "",
+              "price": "3,200 AMD",
+              "image": "images/menu/bacon-pasta.jpg"
+            },
+            {
+              "name": "Pasta Alfredo",
+              "description": "",
+              "price": "3,200 AMD",
+              "image": "images/menu/pasta-alfredo.jpg"
+            },
+            {
+              "name": "Penne Arrabiata",
+              "description": "Penne, tomato sauce, chili pepper, basil, parmesan",
+              "price": "2,900 AMD",
+              "image": "images/menu/penne-arrabiata.jpg"
+            },
+            {
+              "name": "Pesto pasta",
+              "description": "",
+              "price": "3,600 AMD",
+              "image": "images/menu/pesto-pasta.jpg"
+            }
+          ],
+          "image": "images/menu/pesto-pasta.jpg"
+        },
+        {
+          "title": "Sides",
+          "items": [
+            {
+              "name": "Fries",
+              "description": "",
+              "price": "1,200 AMD"
+            },
+            {
+              "name": "Rice",
+              "description": "",
+              "price": "1,200 AMD"
+            },
+            {
+              "name": "Country potatoes",
+              "description": "",
+              "price": "1,200 AMD",
+              "image": "images/menu/country-potatoes.jpg"
+            }
+          ],
+          "image": "images/menu/country-potatoes.jpg"
+        },
+        {
+          "title": "Sauces",
+          "items": [
+            {
+              "name": "Ketchup",
+              "description": "",
+              "price": "500 AMD"
+            },
+            {
+              "name": "Mayonnaise",
+              "description": "",
+              "price": "500 AMD"
+            },
+            {
+              "name": "44 sauce",
+              "description": "",
+              "price": "700 AMD"
+            },
+            {
+              "name": "Cheddar sauce",
+              "description": "",
+              "price": "500 AMD"
+            },
+            {
+              "name": "Barbecue sauce",
+              "description": "",
+              "price": "500 AMD"
+            }
+          ],
+          "image": "images/menu/country-potatoes.jpg"
+        },
+        {
+          "title": "Desserts",
+          "items": [
+            {
+              "name": "Paklava with ice cream",
+              "description": "",
+              "price": "2,600 AMD",
+              "image": "images/menu/paklava-ice-cream.jpg"
+            },
+            {
+              "name": "Watermelon",
+              "description": "",
+              "price": "5,000 AMD"
+            },
+            {
+              "name": "Melon",
+              "description": "",
+              "price": "3,000 AMD"
+            },
+            {
+              "name": "Fruit assortment",
+              "description": "",
+              "price": "7,500 AMD"
+            },
+            {
+              "name": "Ice cream with fruits",
+              "description": "",
+              "price": "2,300 AMD"
+            },
+            {
+              "name": "Ice cream",
+              "description": "",
+              "price": "1,500 AMD"
+            }
+          ],
+          "image": "images/menu/paklava-ice-cream.jpg"
+        }
+      ]
+    },
+    "bar": {
+      "label": "Bar",
+      "image": "images/venue/bartender-pour.jpg",
+      "categories": [
+        {
+          "title": "House Specialty Cocktails",
+          "items": [
+            {
+              "name": "Pink Love",
+              "description": "Gin, peach liqueur, lime",
+              "price": "4,100 AMD"
+            },
+            {
+              "name": "Amazing",
+              "description": "Lychee liqueur, vodka, lime, rum, liqueur, juice",
+              "price": "3,900 AMD"
+            },
+            {
+              "name": "Mangozza",
+              "description": "Ginger, lime, rum, mango",
+              "price": "4,100 AMD"
+            },
+            {
+              "name": "Green Magic",
+              "description": "Gin, basil, lime, juice",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Red Sky",
+              "description": "Vodka, lime, pomegranate, Cointreau",
+              "price": "5,200 AMD"
+            },
+            {
+              "name": "Strong Soldier",
+              "description": "Lime, mint, basil, gin, liqueur",
+              "price": "4,700 AMD"
+            },
+            {
+              "name": "Old Germany",
+              "description": "Vodka, liqueur, juice, lime",
+              "price": "4,800 AMD"
+            },
+            {
+              "name": "Your Passion",
+              "description": "Gin, cucumber, fruit puree",
+              "price": "4,900 AMD"
+            },
+            {
+              "name": "Crazy Citrus",
+              "description": "Aperol, gin, lime, liqueur",
+              "price": "4,900 AMD"
+            },
+            {
+              "name": "Take It Easy",
+              "description": "Liqueur, cherry brandy, amaretto, cognac, whisky",
+              "price": "4,000 AMD"
+            },
+            {
+              "name": "Moi Amour",
+              "description": "Gin, liqueur, flower (water), lime",
+              "price": "3,700 AMD"
+            },
+            {
+              "name": "Purple Bacardi",
+              "description": "Rum, lime, liqueur",
+              "price": "4,700 AMD"
+            }
+          ],
+          "image": "images/venue/plate/red-cocktail.jpg"
+        },
+        {
+          "title": "Classic Cocktails",
+          "items": [
+            {
+              "name": "Gin Basil",
+              "description": "",
+              "price": "3,100 AMD"
+            },
+            {
+              "name": "Negroni",
+              "description": "",
+              "price": "3,700 AMD"
+            },
+            {
+              "name": "Gin Sour",
+              "description": "",
+              "price": "2,900 AMD"
+            },
+            {
+              "name": "Dry Martini",
+              "description": "",
+              "price": "2,900 AMD"
+            },
+            {
+              "name": "Bloody Mary",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Cosmopolitan",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Vodka Martini",
+              "description": "",
+              "price": "2,900 AMD"
+            },
+            {
+              "name": "Moscow Mule",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Pina Colada",
+              "description": "",
+              "price": "3,700 AMD"
+            },
+            {
+              "name": "Mai Tai",
+              "description": "",
+              "price": "4,200 AMD"
+            },
+            {
+              "name": "Daiquiri",
+              "description": "",
+              "price": "3,100 AMD"
+            },
+            {
+              "name": "Mojito",
+              "description": "",
+              "price": "3,700 AMD"
+            },
+            {
+              "name": "Margarita",
+              "description": "",
+              "price": "3,400 AMD"
+            },
+            {
+              "name": "Aperol Spritz",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Long Island Iced Tea",
+              "description": "",
+              "price": "4,100 AMD"
+            },
+            {
+              "name": "Adios M.F.",
+              "description": "",
+              "price": "4,100 AMD"
+            },
+            {
+              "name": "Tequila sunrise",
+              "description": "",
+              "price": "3,100 AMD"
+            },
+            {
+              "name": "Godfather",
+              "description": "",
+              "price": "3,900 AMD"
+            },
+            {
+              "name": "Pina Colada — non-alcoholic",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Tokyo Iced Tea",
+              "description": "",
+              "price": "4,100 AMD"
+            },
+            {
+              "name": "Mojito — non-alcoholic",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Dodo",
+              "description": "",
+              "price": "2,300 AMD"
+            },
+            {
+              "name": "Old Fashioned",
+              "description": "",
+              "price": "3,900 AMD"
+            }
+          ],
+          "image": "images/venue/plate/martini.jpg"
+        },
+        {
+          "title": "Wine",
+          "items": [
+            {
+              "name": "Koor Red",
+              "description": "",
+              "price": "12,000 AMD"
+            },
+            {
+              "name": "Karas Red",
+              "description": "",
+              "price": "12,000 AMD"
+            },
+            {
+              "name": "Takar Red",
+              "description": "",
+              "price": "12,000 / 2,900 AMD"
+            },
+            {
+              "name": "Koor White",
+              "description": "",
+              "price": "11,000 AMD"
+            },
+            {
+              "name": "Karas White",
+              "description": "",
+              "price": "11,000 AMD"
+            },
+            {
+              "name": "Takar White",
+              "description": "",
+              "price": "11,000 / 2,900 AMD"
+            },
+            {
+              "name": "Takar Rose",
+              "description": "",
+              "price": "10,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Vodka",
+          "items": [
+            {
+              "name": "Grey Goose",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Beluga",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Absolut",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Finlandia",
+              "description": "",
+              "price": "1,500 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Champagne",
+          "items": [
+            {
+              "name": "Moët & Chandon",
+              "description": "",
+              "price": "55,000 AMD"
+            },
+            {
+              "name": "Martini Rose",
+              "description": "",
+              "price": "21,000 AMD"
+            },
+            {
+              "name": "Martini Asti",
+              "description": "",
+              "price": "18,000 AMD"
+            },
+            {
+              "name": "Martini Prosecco",
+              "description": "",
+              "price": "18,000 AMD"
+            },
+            {
+              "name": "Martini Brut",
+              "description": "",
+              "price": "18,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/neon-hookah-guest.jpg"
+        },
+        {
+          "title": "Vermouth",
+          "items": [
+            {
+              "name": "Martini Rosso",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Martini Bianco",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Martini Extra dry",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Amaro Montenegro",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Jägermeister",
+              "description": "",
+              "price": "2,500 AMD"
+            },
+            {
+              "name": "Absenta Xenta",
+              "description": "",
+              "price": "2,500 AMD"
+            },
+            {
+              "name": "Aperol",
+              "description": "",
+              "price": "2,100 AMD"
+            },
+            {
+              "name": "Campari",
+              "description": "",
+              "price": "2,100 AMD"
+            },
+            {
+              "name": "Becherovka",
+              "description": "",
+              "price": "1,400 AMD"
+            }
+          ],
+          "image": "images/venue/plate/orange-cocktail.jpg"
+        },
+        {
+          "title": "Liquor",
+          "items": [
+            {
+              "name": "S.T. Germain",
+              "description": "",
+              "price": "4,800 AMD"
+            },
+            {
+              "name": "Amaretto Disaronno",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Drambuie",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Cointreau",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Kahlua",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Baileys",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Sambuca",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Malibu",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Ararat Apricot",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Ararat Coffee",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Cherry Brandy",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Italicus",
+              "description": "",
+              "price": "5,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Gin",
+          "items": [
+            {
+              "name": "Monkey 47",
+              "description": "",
+              "price": "6,500 AMD"
+            },
+            {
+              "name": "Hendricks",
+              "description": "",
+              "price": "4,500 AMD"
+            },
+            {
+              "name": "Bombay Sapphire",
+              "description": "",
+              "price": "3,400 AMD"
+            },
+            {
+              "name": "Mom Love",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Oski",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Malfy Orange",
+              "description": "",
+              "price": "2,500 AMD"
+            }
+          ],
+          "image": "images/venue/plate/gin-shelf.jpg"
+        },
+        {
+          "title": "Beer",
+          "items": [
+            {
+              "name": "Corona",
+              "description": "",
+              "price": "2,300 AMD"
+            },
+            {
+              "name": "Heineken",
+              "description": "",
+              "price": "2,000 AMD"
+            },
+            {
+              "name": "Alexandrapol",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Kilikia",
+              "description": "",
+              "price": "1,300 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Beer Snacks",
+          "items": [
+            {
+              "name": "Chips",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Jerky",
+              "description": "",
+              "price": "1,600 AMD"
+            },
+            {
+              "name": "Pistachio",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Carrot with lemon",
+              "description": "",
+              "price": "1,600 AMD"
+            }
+          ],
+          "image": "images/menu/beer-set.jpg"
+        },
+        {
+          "title": "Single Malt",
+          "items": [
+            {
+              "name": "Laphroaig 10",
+              "description": "",
+              "price": "5,200 AMD"
+            },
+            {
+              "name": "Aberlour 12",
+              "description": "",
+              "price": "5,000 AMD"
+            },
+            {
+              "name": "Glenfiddich 12",
+              "description": "",
+              "price": "4,200 AMD"
+            },
+            {
+              "name": "Macallan 12",
+              "description": "",
+              "price": "11,000 AMD"
+            }
+          ],
+          "image": "images/whisky-ice.jpg"
+        },
+        {
+          "title": "Blended",
+          "items": [
+            {
+              "name": "Chivas Regal 12",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Chivas Regal 18",
+              "description": "",
+              "price": "6,400 AMD"
+            },
+            {
+              "name": "J.W. Black Label",
+              "description": "",
+              "price": "4,300 AMD"
+            },
+            {
+              "name": "J.W. Gold Label",
+              "description": "",
+              "price": "4,800 AMD"
+            },
+            {
+              "name": "Monkey Shoulder",
+              "description": "",
+              "price": "4,400 AMD"
+            },
+            {
+              "name": "J.W. Double Black",
+              "description": "",
+              "price": "5,500 AMD"
+            },
+            {
+              "name": "The Glenlivet 12",
+              "description": "",
+              "price": "5,500 AMD"
+            },
+            {
+              "name": "Jameson stout edition",
+              "description": "",
+              "price": "4,600 AMD"
+            }
+          ],
+          "image": "images/whisky-ice.jpg"
+        },
+        {
+          "title": "Bourbon",
+          "items": [
+            {
+              "name": "Jack Daniel’s",
+              "description": "",
+              "price": "3,400 AMD"
+            },
+            {
+              "name": "Jack Daniel’s Honey",
+              "description": "",
+              "price": "3,400 AMD"
+            },
+            {
+              "name": "Jameson",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Jim Beam",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Jim Beam Double Oak",
+              "description": "",
+              "price": "3,200 AMD"
+            }
+          ],
+          "image": "images/whisky-ice.jpg"
+        },
+        {
+          "title": "Brandy",
+          "items": [
+            {
+              "name": "Hennessy V.S.O.P.",
+              "description": "",
+              "price": "7,200 AMD"
+            },
+            {
+              "name": "Ararat Nairi 20 Y.O",
+              "description": "",
+              "price": "8,000 AMD"
+            },
+            {
+              "name": "Ararat Akhtamar 10 Y.O",
+              "description": "",
+              "price": "3,500 AMD"
+            },
+            {
+              "name": "Ararat 7 Y.O.",
+              "description": "",
+              "price": "2,600 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Tequila",
+          "items": [
+            {
+              "name": "Patrón Silver",
+              "description": "",
+              "price": "5,700 AMD"
+            },
+            {
+              "name": "Olmeca Gold",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Olmeca Blanco",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Don Julio reposado",
+              "description": "",
+              "price": "5,900 AMD"
+            },
+            {
+              "name": "Jose Cuervo",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "AVION 44 extra Anejo",
+              "description": "",
+              "price": "16,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/burnt-orange-highball.jpg"
+        },
+        {
+          "title": "Rum",
+          "items": [
+            {
+              "name": "Angostura 1919",
+              "description": "",
+              "price": "4,700 AMD"
+            },
+            {
+              "name": "Angostura 7",
+              "description": "",
+              "price": "4,400 AMD"
+            },
+            {
+              "name": "Angostura 5",
+              "description": "",
+              "price": "3,200 AMD"
+            },
+            {
+              "name": "Bacardi Carta Blanca",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Bacardi Carta Negra",
+              "description": "",
+              "price": "3,600 AMD"
+            },
+            {
+              "name": "Zacapa 23",
+              "description": "",
+              "price": "7,000 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bartender-pour.jpg"
+        },
+        {
+          "title": "Coffee",
+          "items": [
+            {
+              "name": "Espresso",
+              "description": "",
+              "price": "1,300 AMD"
+            },
+            {
+              "name": "Espresso Double",
+              "description": "",
+              "price": "1,600 AMD"
+            },
+            {
+              "name": "Espresso macchiato",
+              "description": "",
+              "price": "1,300 AMD"
+            },
+            {
+              "name": "Americano",
+              "description": "",
+              "price": "1,300 AMD"
+            },
+            {
+              "name": "Cappuccino",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Syrup (aroma)",
+              "description": "",
+              "price": "+ 600 AMD"
+            },
+            {
+              "name": "Raf Coffee",
+              "description": "",
+              "price": "1,700 AMD"
+            },
+            {
+              "name": "Glace",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Frappuccino",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Hot chocolate",
+              "description": "",
+              "price": "2,100 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        },
+        {
+          "title": "Tea",
+          "items": [
+            {
+              "name": "Masala",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Pomegranate",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Sea-Buckthorn",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Lime & Mint",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Citrus",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Berries",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Ginger & lemon",
+              "description": "",
+              "price": "2,800 AMD"
+            },
+            {
+              "name": "Armenian Herbal",
+              "description": "",
+              "price": "1,400 AMD"
+            },
+            {
+              "name": "Black",
+              "description": "",
+              "price": "1,400 AMD"
+            },
+            {
+              "name": "Green",
+              "description": "",
+              "price": "1,400 AMD"
+            },
+            {
+              "name": "Carcade",
+              "description": "",
+              "price": "1,400 AMD"
+            },
+            {
+              "name": "Pu’er",
+              "description": "",
+              "price": "1,400 AMD"
+            },
+            {
+              "name": "Ice Tea",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Cornel tea",
+              "description": "",
+              "price": "2,700 AMD"
+            }
+          ],
+          "image": "images/venue/plate/monkeys-mural.jpg"
+        },
+        {
+          "title": "Fresh",
+          "items": [
+            {
+              "name": "Apple",
+              "description": "",
+              "price": "2,600 AMD"
+            },
+            {
+              "name": "Orange",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Grapefruit",
+              "description": "",
+              "price": "2,400 AMD"
+            },
+            {
+              "name": "Carrot",
+              "description": "",
+              "price": "2,200 AMD"
+            },
+            {
+              "name": "Pomegranate",
+              "description": "",
+              "price": "5,500 AMD"
+            }
+          ],
+          "image": "images/venue/plate/orange-cocktail.jpg"
+        },
+        {
+          "title": "Lemonade",
+          "items": [
+            {
+              "name": "Watermelon (seasonal)",
+              "description": "",
+              "price": "2,500 / 6,600 AMD"
+            },
+            {
+              "name": "Berries",
+              "description": "",
+              "price": "2,500 / 6,600 AMD"
+            },
+            {
+              "name": "Citrus",
+              "description": "",
+              "price": "2,500 / 6,600 AMD"
+            },
+            {
+              "name": "Lemon & Mint",
+              "description": "",
+              "price": "2,500 / 6,600 AMD"
+            },
+            {
+              "name": "Basil & Strawberry",
+              "description": "",
+              "price": "2,500 / 6,600 AMD"
+            }
+          ],
+          "image": "images/venue/plate/burnt-orange-highball.jpg"
+        },
+        {
+          "title": "Milkshake",
+          "items": [
+            {
+              "name": "Ferrero Rocher",
+              "description": "",
+              "price": "3,400 AMD"
+            },
+            {
+              "name": "Nutella & Banana",
+              "description": "",
+              "price": "3,100 AMD"
+            },
+            {
+              "name": "Oreo",
+              "description": "",
+              "price": "3,000 AMD"
+            },
+            {
+              "name": "Berry",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Strawberry",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Banana",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Chocolate",
+              "description": "",
+              "price": "2,700 AMD"
+            },
+            {
+              "name": "Vanilla",
+              "description": "",
+              "price": "2,500 AMD"
+            }
+          ],
+          "image": "images/venue/plate/dinner-club-sandwich.jpg"
+        },
+        {
+          "title": "Soft Drinks",
+          "items": [
+            {
+              "name": "Tonic “Thomas Henry”",
+              "description": "",
+              "price": "1,800 AMD"
+            },
+            {
+              "name": "Red Bull",
+              "description": "",
+              "price": "1,600 AMD"
+            },
+            {
+              "name": "Juice Natural",
+              "description": "",
+              "price": "800 AMD"
+            },
+            {
+              "name": "Coca-Cola / Fanta / Sprite",
+              "description": "",
+              "price": "700 AMD"
+            },
+            {
+              "name": "Mineral Water",
+              "description": "",
+              "price": "600 AMD"
+            },
+            {
+              "name": "Spring Water",
+              "description": "",
+              "price": "600 AMD"
+            }
+          ],
+          "image": "images/venue/plate/bar-counter.jpg"
+        }
+      ]
+    }
+  },
+  "about": {
+    "title": "About us",
+    "heading": "A cozy lounge for long evenings",
+    "paragraphs": [
+      "44 Hookah is a cozy hookah lounge offering delicious cuisine, flavorful hookah, signature and well known drinks, and friendly staff.",
+      "Enjoy a relaxing atmosphere while trying out our cloudy hookah options. Perfect for a laid-back and enjoyable time."
+    ],
+    "images": [
+      "images/venue/bar-counter.jpg",
+      "images/venue/monkeys-mural.jpg",
+      "images/venue/painting-lounge.jpg"
+    ]
+  },
+  "visit": {
+    "title": "Visit us",
+    "text": "Walk in any day from noon, or call ahead to book a table.",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.2527857993446!2d44.513124075705015!3d40.18118746994205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abcfb4a5189b5%3A0x7a82b1740f7725db!2s2%2C%205%20Abovyan%20poxoc%2C%20Yerevan%200010!5e0!3m2!1sru!2sam!4v1693490624270!5m2!1sru!2sam",
+    "image": "images/venue/sign-smoke.jpg"
+  },
+  "footer": {
+    "ctaTitle": "Your table is waiting tonight.",
+    "bigText": "44 Lounge",
+    "line": "Hookah, kitchen and bar on Abovyan Street.",
+    "copyright": "© {year} VG Company. All rights reserved."
+  }
+}
