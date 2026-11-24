@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import saved from './site.json';
 import { applyTheme } from './theme.js';
-import { DEFAULT_LANG, detectLang, isLang, localize, makeT } from './i18n.js';
+import { DEFAULT_LANG, detectLang, isLang, localize, makeT, rememberLang } from './i18n.js';
 
 // All editable texts, images, colors and fonts live in src/content/site.json (edited at /admin in dev).
 // Pages read the content already translated into the visitor's language.
@@ -18,13 +18,7 @@ export function ContentProvider({ children }) {
   const setLang = useCallback((code, { remember = true } = {}) => {
     if (!isLang(code)) return;
     setLangState(code);
-    if (remember) {
-      try {
-        localStorage.setItem('lang', code);
-      } catch {
-        /* storage blocked */
-      }
-    }
+    if (remember) rememberLang(code);
   }, []);
 
   // In dev, the admin panel shows this site in an iframe and sends unsaved edits (and the language being edited).

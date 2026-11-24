@@ -1935,11 +1935,68 @@ html[lang='hy'] .display {
 .booking__done .booking__title {
   margin: 0;
 }
-.booking__summary {
-  font-family: var(--font-display);
-  font-size: 18px;
+/* required mark and per-field messages */
+.field__req {
+  color: var(--accent);
+  font-weight: 600;
+}
+.field__error {
+  font-size: 13px;
+  color: #ff9a7a;
+}
+.field.is-invalid input,
+.field.is-invalid .stepper {
+  border-color: #ff7a59;
+}
+/* sent: status badge and a summary of the request */
+.booking__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
+  background: var(--accent-soft);
+}
+.booking__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: badge-pulse 1.6s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+.booking__details {
+  width: 100%;
+  margin: 4px 0;
+  border-top: 1px solid var(--line);
+}
+.booking__details > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.booking__details dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.booking__details dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 /* ---------- 404 ---------- */

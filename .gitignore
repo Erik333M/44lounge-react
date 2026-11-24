@@ -5,3 +5,4 @@ content-backups
 .env.local
 .env*.local
 .claude/
+data/

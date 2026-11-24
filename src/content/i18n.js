@@ -43,6 +43,7 @@ export const UI_STRINGS = [
   'Please enter a valid phone number.',
   'Please choose the number of guests.',
   'Please choose a date.',
+  'Please choose a time.',
   'Too many requests. Please call us to book.',
   'Online booking is not set up yet. Please call us to book.',
 ];
@@ -103,19 +104,24 @@ export function makeT(content, lang) {
   return t;
 }
 
-// First visit: the browser's language if we have it, otherwise English.
+// English is always the starting language: a first visit, or opening the site from a link, shows English.
+// A language the visitor picks lasts for that browser tab (reloads and page changes keep it).
+const LANG_KEY = 'lang';
+
 export function detectLang() {
   try {
-    const fromUrl = new URLSearchParams(window.location.search).get('lang');
-    if (isLang(fromUrl)) return fromUrl;
-    const saved = localStorage.getItem('lang');
-    if (isLang(saved)) return saved;
+    const picked = sessionStorage.getItem(LANG_KEY);
+    if (isLang(picked)) return picked;
   } catch {
     /* storage blocked */
   }
-  for (const l of navigator.languages || [navigator.language]) {
-    const code = String(l || '').slice(0, 2).toLowerCase();
-    if (isLang(code)) return code;
-  }
   return DEFAULT_LANG;
+}
+
+export function rememberLang(code) {
+  try {
+    sessionStorage.setItem(LANG_KEY, code);
+  } catch {
+    /* storage blocked */
+  }
 }

@@ -9,9 +9,11 @@ import { saveContent } from './api.js';
 import { ObjectEditor } from './fields.jsx';
 import { ColorsEditor, FontsEditor } from './theme-editors.jsx';
 import { TranslationsEditor } from './translations-editor.jsx';
+import { BookingsPanel, useBookings } from './Bookings.jsx';
 import './admin.css';
 
 const SECTIONS = [
+  { id: 'bookings', group: 'Requests', label: 'Bookings', page: '/visit', noSave: true },
   { id: 'colors', group: 'Design', label: 'Colors', page: '/' },
   { id: 'fonts', group: 'Design', label: 'Fonts', page: '/' },
   { id: 'general', group: 'Whole site', label: 'Name & contacts', path: ['general'], page: '/visit' },
@@ -67,8 +69,12 @@ export default function Admin() {
   const current = SECTIONS.find((s) => s.id === section) || SECTIONS[0];
   langRef.current = current.lang || 'en'; // the preview shows the language being edited
 
+  const bookings = useBookings();
   useEffect(() => {
-    document.title = 'Admin · 44Lounge';
+    document.title = `${bookings.pending ? `(${bookings.pending}) ` : ''}Admin · 44Lounge`;
+  }, [bookings.pending]);
+
+  useEffect(() => {
     try {
       if (sessionStorage.getItem(SAVED_FLAG)) {
         sessionStorage.removeItem(SAVED_FLAG);
@@ -192,6 +198,7 @@ export default function Admin() {
             {g.items.map((s) => (
               <button key={s.id} type="button" className={s.id === section ? 'active' : ''} onClick={() => openSection(s)}>
                 {s.label}
+                {s.id === 'bookings' && bookings.pending > 0 && <span className="adm-bk-count is-hot">{bookings.pending}</span>}
               </button>
             ))}
           </div>
@@ -217,6 +224,7 @@ export default function Admin() {
         </header>
 
         <div className="adm-editor" key={section}>
+          {section === 'bookings' && <BookingsPanel state={bookings} />}
           {section === 'colors' && (
             <ColorsEditor colors={draft.theme.colors} onChange={(colors) => set('theme', { ...draft.theme, colors })} />
           )}

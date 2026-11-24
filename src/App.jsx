@@ -11,8 +11,9 @@ import NotFound from './pages/NotFound.jsx';
 import { scrollToTop, ScrollTrigger, startSmoothScroll, stopSmoothScroll } from './lib/motion.js';
 import { useContent } from './content/ContentContext.jsx';
 
-// The admin panel only exists in `npm run dev`; it is left out of production builds.
-const Admin = import.meta.env.DEV ? lazy(() => import('./admin/Admin.jsx')) : null;
+// /admin: the full editor in `npm run dev`; on the live site only the password-protected Bookings page
+// (the editor writes files on this computer, so it is left out of production builds).
+const Admin = import.meta.env.DEV ? lazy(() => import('./admin/Admin.jsx')) : lazy(() => import('./admin/Bookings.jsx'));
 
 // page names in the browser tab come from the (translated) navigation labels
 const TITLE_KEYS = { '/menu': 'menu', '/about': 'about', '/visit': 'visit' };
@@ -77,16 +78,14 @@ export default function App() {
         <Route path="/visit" element={<Visit />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      {Admin && (
-        <Route
-          path="/admin"
-          element={
-            <Suspense fallback={null}>
-              <Admin />
-            </Suspense>
-          }
-        />
-      )}
+      <Route
+        path="/admin"
+        element={
+          <Suspense fallback={null}>
+            <Admin />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 }

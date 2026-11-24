@@ -31,23 +31,35 @@ Build for hosting: `npm run build` → upload the `dist/` folder.
 - Photos: `public/images/` (`menu/` dish cut-outs, `venue/` photos of the lounge).
 - Open/closed status uses Yerevan time and the hours set in the admin.
 
-## Table bookings (Telegram)
+## Table bookings
 
-Every "Book a table" button opens a form (name, phone, guests, date, time). Requests are sent to
-your Telegram chat by a bot, through `POST /api/book` (`server/booking.js`).
+Guests fill in **name, phone, number of guests and date** (all required) and, if they like, a time.
+They then see a summary of their request marked *pending*.
 
-1. In Telegram open **@BotFather**, send `/newbot`, follow the steps and copy the **token**.
-2. Send any message to your new bot (or add the bot to your staff group and write there).
-3. Open `https://api.telegram.org/bot<TOKEN>/getUpdates` in a browser and copy the number after `"chat":{"id":`.
-4. Copy `.env.example` to `.env.local` and fill in `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`, then restart `npm run dev`.
+Each request is saved as **pending** and appears in the admin under **Bookings**:
 
-When hosting on Vercel, add the same two values under Project → Settings → Environment Variables
-(`api/book.js` is the hosted endpoint). Until they are set, the form tells guests to call instead.
+- The menu shows how many requests are pending, and so does the browser tab, e.g. `(2) Admin`.
+- The page checks for new requests every 15 seconds and plays a short sound. Desktop notifications can be
+  turned on with one click.
+- Staff **Confirm** or **Decline** each request (and can move it back to pending or delete it).
+
+**On your computer** (`npm run dev`): open http://localhost:5173/admin → Bookings. Requests are kept in
+`data/bookings.json` (not uploaded to GitHub). No password unless `ADMIN_PASSWORD` is set in `.env.local`.
+
+**On the live site** (Vercel): `/admin` opens only the Bookings page, behind a password. One-time setup:
+
+1. Vercel → your project → **Storage** → **Create** → **Upstash** (Redis, free plan) → connect it to this project.
+   This adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically.
+2. Project → **Settings → Environment Variables** → add `ADMIN_PASSWORD` (the staff password).
+3. Redeploy. Until step 1 is done, the form asks guests to call instead.
+
+Optional: set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to also get each request in Telegram
+(see `.env.example` for how to get them).
 
 ## Languages (English, Armenian, Russian)
 
-- Switch with EN / ՀԱՅ / РУ in the top bar. The choice is remembered; first-time visitors get their browser's
-  language when it is Armenian or Russian. A link can force one: `/?lang=ru`.
+- The site always opens in **English** (first visit, or from any link). Visitors switch with EN / ՀԱՅ / РУ in the
+  top bar; their choice lasts while that browser tab is open.
 - English is the main text in `src/content/site.json`. Armenian and Russian translations live in the same file under
   `translations`, keyed by the English text, and are edited in the admin under **Languages**.
 - A text with no translation shows in English (used on purpose for brand names such as Jameson or Al Fakher).

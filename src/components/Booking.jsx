@@ -44,17 +44,34 @@ function timeSlots(open, close, date) {
   return slots.filter((t) => t > now + 30).map(fmt);
 }
 
+// Same rules as the server (server/booking.js): name, phone, guests and date are required; time is optional.
+function checkForm(form) {
+  const errors = {};
+  if (form.name.trim().length < 2) errors.name = 'Please enter your name.';
+  const phone = form.phone.trim();
+  if ((phone.match(/\d/g) || []).length < 8 || !/^[+\d\s()-]+$/.test(phone)) errors.phone = 'Please enter a valid phone number.';
+  if (!(form.guests >= 1 && form.guests <= 30)) errors.guests = 'Please choose the number of guests.';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(form.date)) errors.date = 'Please choose a date.';
+  return errors;
+}
+
 function BookingModal({ onClose }) {
   const { general, hours, booking: tx } = useContent();
   const { lang, t } = useLanguage();
   const today = yerevanToday();
   const [form, setForm] = useState({ name: '', phone: '+374 ', guests: 2, date: today, time: '', website: '' });
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const [error, setError] = useState('');
   const firstField = useRef(null);
+  const formRef = useRef(null);
 
   const slots = useMemo(() => timeSlots(hours.open, hours.close, form.date), [hours.open, hours.close, form.date]);
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const set = (k) => (e) => {
+    const value = e.target.value;
+    setForm((f) => ({ ...f, [k]: value }));
+    if (errors[k]) setErrors(({ [k]: _, ...rest }) => rest); // clear a field's message as soon as it is edited
+  };
 
   useEffect(() => {
     if (form.time && !slots.includes(form.time)) setForm((f) => ({ ...f, time: '' }));
@@ -73,9 +90,12 @@ function BookingModal({ onClose }) {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.time) {
-      setError(tx.chooseTimeError);
-      setStatus('error');
+    const found = checkForm(form);
+    setErrors(found);
+    if (Object.keys(found).length) {
+      setStatus('idle');
+      // move to the first field that needs attention
+      formRef.current?.querySelector(`[name="${Object.keys(found)[0]}"]`)?.focus();
       return;
     }
     setStatus('sending');
@@ -96,12 +116,29 @@ function BookingModal({ onClose }) {
     }
   };
 
-  const dateLabel = new Date(`${form.date}T12:00:00Z`).toLocaleDateString(localeOf(lang), {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    timeZone: 'UTC',
-  });
+  const dateLabel = form.date
+    ? new Date(`${form.date}T12:00:00Z`).toLocaleDateString(localeOf(lang), { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+    : '';
+
+  // label with a required mark, and the field's message underneath
+  const label = (text, required = false) => (
+    <span>
+      {text}
+      {required && (
+        <b className="field__req" aria-hidden="true">
+          {' '}
+          *
+        </b>
+      )}
+    </span>
+  );
+  const message = (name) =>
+    errors[name] ? (
+      <small className="field__error" id={`booking-${name}-error`}>
+        {t(errors[name])}
+      </small>
+    ) : null;
+  const invalid = (name) => (errors[name] ? { 'aria-invalid': true, 'aria-describedby': `booking-${name}-error` } : {});
 
   return (
     <div className="booking" role="dialog" aria-modal="true" aria-labelledby="booking-title" onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -111,63 +148,118 @@ function BookingModal({ onClose }) {
         </button>
 
         {status === 'sent' ? (
-          <div className="booking__done">
-            <p className="eyebrow eyebrow--accent">{tx.sentLabel}</p>
+          <div className="booking__done" role="status">
+            <p className="booking__badge">
+              <span className="booking__badge-dot" /> {tx.sentLabel}
+            </p>
             <h2 className="display booking__title" id="booking-title">
               {fill(tx.sentTitle, { name: form.name.trim().split(' ')[0] })}
             </h2>
-            <p className="booking__summary">
-              {fill(tx.tableFor, { guests: form.guests })} · {dateLabel} · {form.time}
-            </p>
+            <dl className="booking__details">
+              <div>
+                <dt>{tx.name}</dt>
+                <dd>{form.name.trim()}</dd>
+              </div>
+              <div>
+                <dt>{tx.phone}</dt>
+                <dd>{form.phone.trim()}</dd>
+              </div>
+              <div>
+                <dt>{tx.guests}</dt>
+                <dd>{form.guests}</dd>
+              </div>
+              <div>
+                <dt>{tx.date}</dt>
+                <dd>{dateLabel}</dd>
+              </div>
+              <div>
+                <dt>{tx.time}</dt>
+                <dd>{form.time || tx.anyTime}</dd>
+              </div>
+            </dl>
             <p className="muted">{fill(tx.sentText, { phone: general.phone })}</p>
             <button type="button" className="btn" onClick={onClose}>
               {tx.done}
             </button>
           </div>
         ) : (
-          <form className="booking__form" onSubmit={submit} noValidate>
+          <form className="booking__form" onSubmit={submit} noValidate ref={formRef}>
             <p className="eyebrow eyebrow--accent">{general.brand}</p>
             <h2 className="display booking__title" id="booking-title">
               {tx.title}
             </h2>
 
-            <label className="field">
-              <span>{tx.name}</span>
-              <input ref={firstField} type="text" autoComplete="name" required minLength={2} maxLength={60} value={form.name} onChange={set('name')} />
+            <label className={`field${errors.name ? ' is-invalid' : ''}`}>
+              {label(tx.name, true)}
+              <input
+                ref={firstField}
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                minLength={2}
+                maxLength={60}
+                value={form.name}
+                onChange={set('name')}
+                {...invalid('name')}
+              />
+              {message('name')}
             </label>
 
-            <label className="field">
-              <span>{tx.phone}</span>
-              <input type="tel" autoComplete="tel" inputMode="tel" required maxLength={30} value={form.phone} onChange={set('phone')} />
+            <label className={`field${errors.phone ? ' is-invalid' : ''}`}>
+              {label(tx.phone, true)}
+              <input
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                inputMode="tel"
+                required
+                maxLength={30}
+                value={form.phone}
+                onChange={set('phone')}
+                {...invalid('phone')}
+              />
+              {message('phone')}
             </label>
 
-            <div className="field">
-              <span>{tx.guests}</span>
+            <div className={`field${errors.guests ? ' is-invalid' : ''}`}>
+              {label(tx.guests, true)}
               <div className="stepper">
                 <button type="button" aria-label={t('Fewer guests')} onClick={() => setForm((f) => ({ ...f, guests: Math.max(1, f.guests - 1) }))}>
                   −
                 </button>
-                <output aria-live="polite">{form.guests}</output>
+                <output aria-live="polite" name="guests">
+                  {form.guests}
+                </output>
                 <button type="button" aria-label={t('More guests')} onClick={() => setForm((f) => ({ ...f, guests: Math.min(30, f.guests + 1) }))}>
                   +
                 </button>
               </div>
+              {message('guests')}
             </div>
 
             <div className="field-row">
-              <label className="field">
-                <span>{tx.date}</span>
-                <input type="date" required min={today} max={addDays(today, 60)} value={form.date} onChange={set('date')} />
+              <label className={`field${errors.date ? ' is-invalid' : ''}`}>
+                {label(tx.date, true)}
+                <input
+                  name="date"
+                  type="date"
+                  required
+                  min={today}
+                  max={addDays(today, 60)}
+                  value={form.date}
+                  onChange={set('date')}
+                  {...invalid('date')}
+                />
+                {message('date')}
               </label>
               <label className="field">
-                <span>{tx.time}</span>
-                <select required value={form.time} onChange={set('time')}>
-                  <option value="" disabled>
-                    {slots.length ? tx.choose : tx.noTimes}
-                  </option>
-                  {slots.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
+                {label(tx.time)}
+                <select name="time" value={form.time} onChange={set('time')}>
+                  <option value="">{slots.length ? tx.anyTime : tx.noTimes}</option>
+                  {slots.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
                     </option>
                   ))}
                 </select>
@@ -188,7 +280,8 @@ function BookingModal({ onClose }) {
               {status === 'sending' ? tx.sending : tx.submit}
             </button>
             <p className="booking__note muted">
-              {fill(tx.note, { open: hours.open, close: hours.close })} <a href={telHref(general.phone)}>{general.phone}</a>
+              <b className="field__req">*</b> {tx.requiredNote} · {fill(tx.note, { open: hours.open, close: hours.close })}{' '}
+              <a href={telHref(general.phone)}>{general.phone}</a>
             </p>
           </form>
         )}
