@@ -7,7 +7,7 @@
 //   ADMIN_PASSWORD                        password for the Bookings page at /admin on the live site
 //   TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID optional: also send each new request to Telegram
 
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { checkAdmin } from './admin-auth.js';
 import { newBooking, sortBookings, STATUSES } from './bookings-store.js';
 
 const MAX_GUESTS = 30;
@@ -116,32 +116,10 @@ export async function handleBooking(body, ip, env, store) {
 
 // ---- admin: list and answer requests ----
 
-const digest = (s) => createHash('sha256').update(String(s)).digest();
-
-// `open` is true only on the local dev server (no password needed on your own computer).
-export function authorized(auth, env, { open = false } = {}) {
-  const password = env.ADMIN_PASSWORD;
-  if (!password) return open;
-  const given = String(auth || '').replace(/^Bearer\s+/i, '');
-  return timingSafeEqual(digest(given), digest(password));
-}
-
-const LOGIN_LIMIT = { max: 10, windowMs: 15 * 60 * 1000, bucket: 'login' };
-function loginLocked(ip) {
-  const now = Date.now();
-  const list = (hits.get(`login:${ip || 'unknown'}`) || []).filter((t) => now - t < LOGIN_LIMIT.windowMs);
-  return list.length >= LOGIN_LIMIT.max;
-}
-
 // GET /api/bookings → list · POST /api/bookings { id, status } → update · POST { id, remove: true } → delete
 export async function handleBookingsAdmin({ method, body, auth, ip, env, store, open = false }) {
-  if (!env.ADMIN_PASSWORD && !open) return { status: 503, error: 'Set ADMIN_PASSWORD to use the Bookings page.' };
-  // slow down password guessing: after 10 wrong tries, every try is refused for 15 minutes
-  if (loginLocked(ip)) return { status: 429, error: 'Too many attempts. Try again later.' };
-  if (!authorized(auth, env, { open })) {
-    rateLimited(ip, LOGIN_LIMIT);
-    return { status: 401, error: 'Wrong password' };
-  }
+  const denied = checkAdmin({ auth, ip, env, open });
+  if (denied) return denied;
   if (!store) return { status: 503, error: 'Booking storage is not set up yet (see README → Bookings).' };
 
   try {

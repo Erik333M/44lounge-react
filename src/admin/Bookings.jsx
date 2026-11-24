@@ -1,36 +1,19 @@
 // Table requests from the website's "Book a table" form.
-// Shown as a section of the admin (npm run dev) and as the whole /admin page on the live site (password).
+// The Bookings section of the admin (/admin; on the live site behind the admin password).
 // New requests arrive as "pending": the page checks every 15 seconds, plays a short sound, shows a desktop
 // notification (when allowed) and puts the pending count in the browser tab.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { readPass, writePass } from './auth.js';
 import './admin.css';
 
 const POLL_MS = 15000;
-const PASS_KEY = 'adm-bookings-pass';
 const FILTERS = [
   ['pending', 'Pending'],
   ['confirmed', 'Confirmed'],
   ['declined', 'Declined'],
   ['all', 'All'],
 ];
-
-const readPass = () => {
-  try {
-    return sessionStorage.getItem(PASS_KEY) || '';
-  } catch {
-    return '';
-  }
-};
-const writePass = (p) => {
-  try {
-    if (p) sessionStorage.setItem(PASS_KEY, p);
-    else sessionStorage.removeItem(PASS_KEY);
-  } catch {
-    /* storage blocked */
-  }
-};
-
 // short two-note chime, no sound file needed
 function chime() {
   try {
@@ -168,7 +151,7 @@ function NotificationsButton() {
   );
 }
 
-function Login({ onLogin, error }) {
+export function Login({ onLogin, error, title = 'Bookings' }) {
   const [value, setValue] = useState('');
   return (
     <form
@@ -178,7 +161,7 @@ function Login({ onLogin, error }) {
         onLogin(value);
       }}
     >
-      <h2>Bookings</h2>
+      <h2>{title}</h2>
       <p className="adm-hint">Enter the staff password.</p>
       <input className="adm-input" type="password" autoComplete="current-password" autoFocus value={value} onChange={(e) => setValue(e.target.value)} />
       {error && <p className="adm-error">{error}</p>}
@@ -301,35 +284,6 @@ export function BookingsPanel({ state }) {
           </li>
         ))}
       </ul>
-    </div>
-  );
-}
-
-// The whole /admin page on the live site: bookings only.
-export default function BookingsApp() {
-  const state = useBookings();
-  useEffect(() => {
-    document.title = `${state.pending ? `(${state.pending}) ` : ''}Bookings · 44 Lounge`;
-  }, [state.pending]);
-  useEffect(() => {
-    const meta = document.createElement('meta');
-    meta.name = 'robots';
-    meta.content = 'noindex';
-    document.head.appendChild(meta);
-    return () => meta.remove();
-  }, []);
-  return (
-    <div className="adm adm-solo">
-      <main className="adm-main">
-        <header className="adm-bar">
-          <h1>
-            44 Lounge · Bookings {state.pending ? <span className="adm-bk-count is-hot">{state.pending} pending</span> : null}
-          </h1>
-        </header>
-        <div className="adm-editor">
-          <BookingsPanel state={state} />
-        </div>
-      </main>
     </div>
   );
 }

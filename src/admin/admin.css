@@ -801,3 +801,15 @@
 .adm-login h2 {
   margin: 0;
 }
+.adm-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.adm-gate-msg {
+  padding: 60px 0;
+  text-align: center;
+}

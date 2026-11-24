@@ -46,7 +46,7 @@ Each request is saved as **pending** and appears in the admin under **Bookings**
 **On your computer** (`npm run dev`): open http://localhost:5173/admin → Bookings. Requests are kept in
 `data/bookings.json` (not uploaded to GitHub). No password unless `ADMIN_PASSWORD` is set in `.env.local`.
 
-**On the live site** (Vercel): `/admin` opens only the Bookings page, behind a password. One-time setup:
+**On the live site** (Vercel): `/admin` → Bookings, behind the admin password. One-time setup:
 
 1. Vercel → your project → **Storage** → **Create** → **Upstash** (Redis, free plan) → connect it to this project.
    This adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically.
@@ -71,15 +71,21 @@ The home page shows a set of kitchen dishes that changes every day at 06:00 Yere
 visitor. Dishes with a photo and a price take part, one per category where possible (`src/lib/dailyDishes.js`).
 The number of dishes is set in the admin under Home → Dishes of the day.
 
-## Admin panel (texts, images, colors, fonts)
+## Admin panel (bookings, texts, images, colors, fonts, menus, translations)
 
-Open **http://localhost:5173/admin** while `npm run dev` is running.
+**On the live site:** open `your-site/admin` and enter the password (`ADMIN_PASSWORD`).
+**Save & publish** writes your changes to GitHub as one commit, and Vercel republishes the site, so the
+change is online in about a minute. Every save stays in the GitHub history and can be undone there.
 
-- **Colors / Fonts**: six theme colors and three fonts (any Google Fonts name, or upload a font file).
-- **Texts and images**: every section of every page, the full menus (categories, items, prices), hours, contacts.
-  Images can be uploaded (saved to `public/uploads/`) or picked from the library.
-- The right side is a live preview of unsaved changes. **Save** (or ⌘S) writes everything to `src/content/site.json`.
-  The previous version is kept in `content-backups/` (last 30).
+- Photos are shrunk before upload (max 2000 px, WebP, transparency kept) and show in the preview at once.
+- If someone else saved (or code was pushed) after you opened the editor, your save is refused instead of
+  overwriting theirs. Copy your change, reload and make it again.
+- One-time setup in Vercel → Settings → Environment Variables: `GITHUB_TOKEN`, a fine-grained GitHub token for
+  this repository only, with **Contents: Read and write** (see `.env.example`). Then redeploy.
 
-The admin and its save API only exist in `npm run dev`. `npm run build` bakes the saved content into the site and
-leaves the admin out, so the deployed site has no admin page.
+**On your computer:** `npm run dev`, then http://localhost:5173/admin. Saves go to `src/content/site.json`
+(older versions in `content-backups/`). Push to GitHub to publish. Run `git pull` first if you also edit on
+the live site, so your copy has those changes.
+
+- The right side is a live preview of unsaved changes, on desktop or phone size.
+- Animations are not editable.

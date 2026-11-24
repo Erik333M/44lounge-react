@@ -21,11 +21,13 @@ export function ContentProvider({ children }) {
     if (remember) rememberLang(code);
   }, []);
 
-  // In dev, the admin panel shows this site in an iframe and sends unsaved edits (and the language being edited).
+  // The admin shows this site in a frame and sends unsaved edits (and the language being edited).
+  // Only a page of this same site can send them (the origin check), so visitors can't be shown anything else.
   useEffect(() => {
-    if (!import.meta.env.DEV || window.parent === window) return;
+    if (window.parent === window) return;
     const onMessage = (e) => {
-      if (e.origin !== window.location.origin || e.data?.type !== PREVIEW_MESSAGE) return;
+      if (e.origin !== window.location.origin || e.source !== window.parent || e.data?.type !== PREVIEW_MESSAGE) return;
+      if (e.data.assets) window.__previewAssets = e.data.assets; // uploads not published yet
       setRaw(e.data.content);
       if (e.data.lang) setLang(e.data.lang, { remember: false });
     };

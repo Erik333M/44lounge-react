@@ -1,15 +1,18 @@
-// Admin panel (only in `npm run dev`, at /admin).
-// Edits src/content/site.json: texts, images, colors and fonts. Animations are not editable.
+// Admin panel at /admin: bookings, texts, images, colors, fonts, menus and translations (not animations).
+//   npm run dev → edits src/content/site.json on this computer
+//   live site   → password; reads the latest content from GitHub, and Save publishes it (one commit,
+//                 Vercel republishes the site in about a minute)
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import saved from '../content/site.json';
 import { PREVIEW_MESSAGE, READY_MESSAGE } from '../content/ContentContext.jsx';
 import { fontFaces, googleFontsHref } from '../content/theme.js';
-import { saveContent } from './api.js';
+import { LIVE, loadContent, previewAssets, saveContent } from './api.js';
+import { readPass, writePass } from './auth.js';
 import { ObjectEditor } from './fields.jsx';
 import { ColorsEditor, FontsEditor } from './theme-editors.jsx';
 import { TranslationsEditor } from './translations-editor.jsx';
-import { BookingsPanel, useBookings } from './Bookings.jsx';
+import { BookingsPanel, Login, useBookings } from './Bookings.jsx';
 import './admin.css';
 
 const SECTIONS = [
@@ -48,9 +51,68 @@ const setIn = (obj, [k, ...rest], value) => (rest.length ? { ...obj, [k]: setIn(
 
 const SAVED_FLAG = 'adm-just-saved';
 
-export default function Admin() {
-  const [draft, setDraft] = useState(saved);
-  const [savedJson, setSavedJson] = useState(() => JSON.stringify(saved));
+// Live site: ask for the password, then load the latest content before showing the editor.
+export default function AdminGate() {
+  const [state, setState] = useState(LIVE ? { loading: true } : { content: saved, sha: null });
+  const [loginError, setLoginError] = useState('');
+
+  const load = useCallback(async () => {
+    setState({ loading: true });
+    try {
+      const { content, sha } = await loadContent();
+      setState({ content, sha });
+    } catch (e) {
+      if (e.status === 401 || e.status === 429) {
+        setLoginError(readPass() ? e.message : '');
+        setState({ login: true });
+      } else setState({ error: e.message });
+    }
+  }, []);
+
+  useEffect(() => {
+    document.title = 'Admin · 44Lounge';
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex';
+    document.head.appendChild(meta);
+    if (LIVE) load();
+    return () => meta.remove();
+  }, [load]);
+
+  if (state.content) return <Admin initial={state.content} initialSha={state.sha} />;
+  return (
+    <div className="adm adm-solo">
+      <main className="adm-main">
+        <div className="adm-editor">
+          {state.login && (
+            <Login
+              title="44 Lounge · Admin"
+              error={loginError}
+              onLogin={(p) => {
+                writePass(p);
+                load();
+              }}
+            />
+          )}
+          {state.loading && <p className="adm-hint adm-gate-msg">Loading…</p>}
+          {state.error && (
+            <div className="adm-login">
+              <p className="adm-error">{state.error}</p>
+              <button type="button" onClick={load}>
+                Try again
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function Admin({ initial, initialSha }) {
+  const [draft, setDraft] = useState(initial);
+  const [savedJson, setSavedJson] = useState(() => JSON.stringify(initial));
+  const [sha, setSha] = useState(initialSha);
   const [section, setSection] = useState(() => {
     const saved = sessionStorage.getItem('adm-section');
     return SECTIONS.some((s) => s.id === saved) ? saved : 'colors';
@@ -58,7 +120,7 @@ export default function Admin() {
   const [page, setPage] = useState('/');
   const [frameKey, setFrameKey] = useState(0);
   const [device, setDevice] = useState('desktop');
-  const [status, setStatus] = useState(null); // { type: 'ok' | 'error', text }
+  const [status, setStatus] = useState(null); // { type: 'ok' | 'error', text, sticky }
   const [saving, setSaving] = useState(false);
   const frameRef = useRef(null);
   const draftRef = useRef(draft);
@@ -94,15 +156,15 @@ export default function Admin() {
   }, [section]);
 
   useEffect(() => {
-    if (!status) return;
-    const t = setTimeout(() => setStatus(null), 3500);
+    if (!status || status.sticky) return;
+    const t = setTimeout(() => setStatus(null), status.type === 'error' ? 9000 : LIVE ? 7000 : 3500);
     return () => clearTimeout(t);
   }, [status]);
 
   // ---- live preview ----
   const sendPreview = useCallback(() => {
     frameRef.current?.contentWindow?.postMessage(
-      { type: PREVIEW_MESSAGE, content: draftRef.current, lang: langRef.current },
+      { type: PREVIEW_MESSAGE, content: draftRef.current, lang: langRef.current, assets: previewAssets() },
       window.location.origin
     );
   }, []);
@@ -121,24 +183,33 @@ export default function Admin() {
   }, [sendPreview]);
 
   // ---- save ----
+  const shaRef = useRef(sha);
+  shaRef.current = sha;
   const save = useCallback(async () => {
     setSaving(true);
-    try {
-      sessionStorage.setItem(SAVED_FLAG, '1'); // the dev server may reload this page after the file changes
-    } catch {
-      /* ignore */
+    if (!LIVE) {
+      try {
+        sessionStorage.setItem(SAVED_FLAG, '1'); // the dev server may reload this page after the file changes
+      } catch {
+        /* ignore */
+      }
     }
     try {
-      await saveContent(draftRef.current);
+      const result = await saveContent(draftRef.current, { sha: shaRef.current });
+      if (result?.sha) setSha(result.sha);
       setSavedJson(JSON.stringify(draftRef.current));
-      setStatus({ type: 'ok', text: 'Saved' });
+      setStatus({ type: 'ok', text: LIVE ? 'Published · the live site updates in about a minute' : 'Saved' });
     } catch (e) {
       try {
         sessionStorage.removeItem(SAVED_FLAG);
       } catch {
         /* ignore */
       }
-      setStatus({ type: 'error', text: `Not saved: ${e.message}` });
+      setStatus(
+        e.status === 409
+          ? { type: 'error', sticky: true, text: `Not saved: ${e.message} Copy your change, reload this page, then make it again.` }
+          : { type: 'error', text: `Not saved: ${e.message}` }
+      );
     } finally {
       setSaving(false);
     }
@@ -203,9 +274,25 @@ export default function Admin() {
             ))}
           </div>
         ))}
-        <p className="adm-nav-foot">
-          Changes are saved to <code>src/content/site.json</code>. Older versions are kept in <code>content-backups/</code>.
-        </p>
+        {LIVE ? (
+          <p className="adm-nav-foot">
+            Save publishes your changes: the live site updates in about a minute. Every save is kept in the GitHub history.{' '}
+            <button
+              type="button"
+              className="adm-link"
+              onClick={() => {
+                writePass('');
+                window.location.reload();
+              }}
+            >
+              Log out
+            </button>
+          </p>
+        ) : (
+          <p className="adm-nav-foot">
+            Changes are saved to <code>src/content/site.json</code>. Older versions are kept in <code>content-backups/</code>.
+          </p>
+        )}
       </aside>
 
       <main className="adm-main">
@@ -218,7 +305,7 @@ export default function Admin() {
               Discard
             </button>
             <button type="button" className="primary" disabled={!dirty || saving} onClick={save} title="⌘S">
-              {saving ? 'Saving…' : 'Save'}
+              {saving ? (LIVE ? 'Publishing…' : 'Saving…') : LIVE ? 'Save & publish' : 'Save'}
             </button>
           </div>
         </header>
@@ -275,7 +362,9 @@ export default function Admin() {
         <div className={`adm-frame-wrap ${device}`}>
           <iframe key={`${page}-${frameKey}`} ref={frameRef} src={page} title="Preview" />
         </div>
-        <p className="adm-preview-note">Preview shows unsaved changes. The live site updates after you save.</p>
+        <p className="adm-preview-note">
+          Preview shows unsaved changes. {LIVE ? 'The live site updates about a minute after you save.' : 'The live site updates after you save.'}
+        </p>
       </section>
     </div>
   );
