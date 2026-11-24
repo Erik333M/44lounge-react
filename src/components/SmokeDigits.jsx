@@ -61,9 +61,15 @@ class SmokeSource {
     this.videos.forEach((v) => v.pause());
   }
 
-  play() {
+  // Asks the front video to play. Phones may refuse or pause it on their own (iPhone Safari won't start a
+  // silent video it considers hidden, and pauses videos when the tab is in the background), so this is
+  // called every frame and retries about once a second until the video really runs.
+  play(now = performance.now()) {
     const v = this.videos[this.front];
-    if (v.paused) v.play().catch(() => {});
+    if (!v.paused || now - (this.lastTry || 0) < 900) return;
+    this.lastTry = now;
+    if (v.ended || (v.duration && v.currentTime >= v.duration - 0.05)) v.currentTime = 0;
+    v.play().catch(() => {});
   }
 
   destroy() {
@@ -124,14 +130,20 @@ function layout(ctx, w, h, family) {
 
 export default function SmokeDigits({ src, state, offsets = [0, 5], className = '' }) {
   const canvasRef = useRef(null);
-  const hostRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
-    const sources = offsets.map((o) => new SmokeSource(asset(src), o, hostRef.current));
+    // The video elements only feed the canvas. They live directly in <body>, fixed on screen and almost
+    // transparent: inside the hero they would be hidden together with the 44 while scrolling, and iPhone
+    // Safari then refuses to resume them when the 44 comes back (frozen smoke after scrolling up).
+    const host = document.createElement('div');
+    host.className = 'smoke-sources';
+    host.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(host);
+    const sources = offsets.map((o) => new SmokeSource(asset(src), o, host));
     const family = getComputedStyle(document.documentElement).getPropertyValue('--font-display').trim() || 'sans-serif';
     let w = 0;
     let h = 0;
@@ -158,7 +170,8 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
         wasPaused = true;
         return;
       }
-      if (wasPaused) sources.forEach((s) => s.play());
+      if (wasPaused) sources.forEach((s) => (s.lastTry = 0)); // retry right away after being paused
+      sources.forEach((s) => s.play(now));
       wasPaused = false;
 
       const sc = state.scale || 1;
@@ -220,14 +233,10 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
       cancelAnimationFrame(raf);
       ro?.disconnect();
       sources.forEach((s) => s.destroy());
+      host.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
 
-  return (
-    <>
-      <canvas ref={canvasRef} className={className} aria-hidden="true" />
-      <div ref={hostRef} className="smoke-sources" aria-hidden="true" />
-    </>
-  );
+  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

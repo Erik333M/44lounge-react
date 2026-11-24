@@ -526,18 +526,23 @@ html[lang='hy'] .display {
   width: 100%;
   height: 100%;
 }
-/* the video elements only feed the canvas; kept in the page (some phones won't decode detached videos) */
+/* the video elements only feed the hero canvas. They sit in <body>, fixed in a corner and practically
+   invisible but never hidden: phones (iPhone Safari) won't keep playing videos they consider hidden */
 .smoke-sources {
-  position: absolute;
-  width: 1px;
-  height: 1px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 2px;
   overflow: hidden;
-  opacity: 0;
+  opacity: 0.01;
   pointer-events: none;
+  z-index: -1;
 }
 .smoke-sources video {
-  width: 1px;
-  height: 1px;
+  display: block;
+  width: 2px;
+  height: 2px;
 }
 .hero__top,
 .hero__bottom {
