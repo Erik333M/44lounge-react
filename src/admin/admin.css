@@ -580,3 +580,68 @@
     display: none;
   }
 }
+
+.adm .adm-number {
+  max-width: 120px;
+}
+
+/* translations */
+.adm-tr-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  background: var(--adm-bg, #f6f4f1);
+}
+.adm-tr-bar .adm-input {
+  flex: 1;
+}
+.adm-tr-progress {
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+.adm-tr-group {
+  margin: 18px 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.adm-tr-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 14px;
+  align-items: start;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.adm-tr-row .adm-hint {
+  grid-column: 1 / -1;
+}
+.adm-tr-en {
+  margin: 0;
+  padding-top: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.adm-tr-row.is-missing .adm-tr-en::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: #e0a400;
+}
+.adm-tr-row textarea.adm-input {
+  min-height: 0;
+  resize: vertical;
+}
+.adm-object.adm-tr {
+  gap: 0;
+}

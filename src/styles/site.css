@@ -8,9 +8,9 @@
   --muted: #9d9189;
   --accent: #fa3601; /* neon of the wall sign */
   --brass: #c7ad88;
-  --font-display: 'Unbounded', sans-serif;
-  --font-body: 'Manrope', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Unbounded', "Noto Sans Armenian", sans-serif;
+  --font-body: 'Manrope', "Noto Sans Armenian", sans-serif;
+  --font-mono: 'JetBrains Mono', "Noto Sans Armenian", monospace;
 
   --line: color-mix(in srgb, var(--text) 14%, transparent);
   --line-strong: color-mix(in srgb, var(--text) 28%, transparent);
@@ -123,6 +123,13 @@ ol {
   line-height: 0.98;
   letter-spacing: -0.03em;
   text-transform: uppercase;
+}
+/* Armenian letters come from Noto Sans Armenian, which is lighter than Unbounded at the same weight,
+   and needs a little more line height for its tall capitals */
+html[lang='hy'] .display {
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
 }
 .section-title {
   font-size: clamp(2.2rem, 6vw, 5.2rem);
@@ -380,6 +387,32 @@ ol {
   display: flex;
   align-items: center;
   gap: 18px;
+}
+/* language switch: EN / ՀԱՅ / РУ */
+.lang-switch {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--line, rgba(242, 234, 223, 0.14));
+  border-radius: 999px;
+}
+.lang-switch button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: var(--muted);
+  transition: color 0.25s, background 0.25s;
+}
+.lang-switch button:hover {
+  color: var(--text);
+}
+.lang-switch button.is-active {
+  color: #fff;
+  background: var(--accent);
 }
 .nav__burger {
   display: none;
@@ -790,6 +823,9 @@ ol {
   justify-content: space-between;
   gap: 24px;
   margin-bottom: clamp(28px, 4vw, 56px);
+}
+.dishes__eyebrow {
+  margin-bottom: 14px;
 }
 .dish {
   position: relative;

@@ -17,10 +17,13 @@ const COLOR_VARS = {
   accent: '--accent',
   brass: '--brass',
 };
+// Armenian letters come from Noto Sans Armenian when the chosen font has none (Unbounded, Manrope and
+// JetBrains Mono cover Latin and Cyrillic only).
+const ARMENIAN = '"Noto Sans Armenian"';
 const FONT_VARS = {
-  display: ['--font-display', 'sans-serif'],
-  body: ['--font-body', 'sans-serif'],
-  mono: ['--font-mono', 'monospace'],
+  display: ['--font-display', `${ARMENIAN}, sans-serif`],
+  body: ['--font-body', `${ARMENIAN}, sans-serif`],
+  mono: ['--font-mono', `${ARMENIAN}, monospace`],
 };
 
 const cssFontName = (name) => `"${String(name).replace(/["\\]/g, '')}"`;

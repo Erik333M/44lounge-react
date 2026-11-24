@@ -14,7 +14,8 @@ import { useContent } from './content/ContentContext.jsx';
 // The admin panel only exists in `npm run dev`; it is left out of production builds.
 const Admin = import.meta.env.DEV ? lazy(() => import('./admin/Admin.jsx')) : null;
 
-const TITLES = { '/': '', '/menu': 'Menu', '/about': 'About', '/visit': 'Visit' };
+// page names in the browser tab come from the (translated) navigation labels
+const TITLE_KEYS = { '/menu': 'menu', '/about': 'about', '/visit': 'visit' };
 
 function SiteLayout() {
   const { pathname } = useLocation();
@@ -35,8 +36,6 @@ function SiteLayout() {
     const menuTabSwitch = prev && prev.startsWith('/menu') && pathname.startsWith('/menu');
     if (!menuTabSwitch) scrollToTop();
     prevPath.current = pathname;
-    const key = Object.keys(TITLES).find((p) => p !== '/' && pathname.startsWith(p));
-    document.title = key ? `${TITLES[key]} · ${general.brand}` : `${general.brand} — ${general.tagline}`;
     // Removing the previous page's pinned sections (home hero/statement) makes ScrollTrigger put back
     // the old scroll position a moment later — so go to the top again once that has happened.
     const raf = requestAnimationFrame(() => {
@@ -50,7 +49,12 @@ function SiteLayout() {
       cancelAnimationFrame(raf);
       clearTimeout(t);
     };
-  }, [pathname, general.brand, general.tagline]);
+  }, [pathname]);
+
+  useEffect(() => {
+    const key = Object.keys(TITLE_KEYS).find((p) => pathname.startsWith(p));
+    document.title = key ? `${general.nav[TITLE_KEYS[key]]} · ${general.brand}` : `${general.brand} — ${general.tagline}`;
+  }, [pathname, general]);
 
   return (
     <BookingProvider>

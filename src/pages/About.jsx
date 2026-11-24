@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
 import { gsap, reveals, useScene } from '../lib/motion.js';
 import { Arrow, Img, Split } from '../components/ui.jsx';
 
 export default function About() {
   const { about, hours, menu, buttons } = useContent();
+  const { t } = useLanguage();
   const ref = useRef(null);
   const count = (s) => menu[s].categories.reduce((n, c) => n + c.items.length, 0);
 
@@ -70,13 +71,13 @@ export default function About() {
           </div>
           <div className="fact">
             <span className="eyebrow">{menu.hookah.label}</span>
-            <p className="display fact__value">{menu.hookah.categories[0]?.items.length} lines</p>
+            <p className="display fact__value">{menu.hookah.categories[0]?.items.length} {t.plural(menu.hookah.categories[0]?.items.length, 'line', 'lines')}</p>
           </div>
           <div className="fact">
             <span className="eyebrow">
               {menu.kitchen.label} & {menu.bar.label}
             </span>
-            <p className="display fact__value">{count('kitchen') + count('bar')} items</p>
+            <p className="display fact__value">{count('kitchen') + count('bar')} {t.plural(count('kitchen') + count('bar'), 'item', 'items')}</p>
           </div>
         </section>
       </div>

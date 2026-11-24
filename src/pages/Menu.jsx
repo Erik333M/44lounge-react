@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, NavLink, useParams } from 'react-router-dom';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
 import { gsap, lockScroll, reveals, scrollToElement, useScene } from '../lib/motion.js';
 import { Arrow, Img, Split } from '../components/ui.jsx';
 
@@ -11,6 +11,7 @@ const isCutout = (src) => /\.(png|webp)$/i.test(src || ''); // dish photos with 
 /* Plate carousel: one round plate per category. The centre plate is large and lit,
    neighbours peek in smaller at the sides. Swipe / drag, arrows, keyboard or a tap on a side plate. */
 function PlateCarousel({ categories, active, onChange }) {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const drag = useRef({ x: 0, dx: 0, on: false, moved: false });
   const [dx, setDx] = useState(0);
@@ -64,7 +65,7 @@ function PlateCarousel({ categories, active, onChange }) {
   const current = categories[active];
 
   return (
-    <div className="plates" aria-roledescription="carousel" aria-label="Menu categories">
+    <div className="plates" aria-roledescription="carousel" aria-label={t('Menu categories')}>
       <div
         ref={ref}
         className={`plates__stage${dx ? ' is-dragging' : ''}`}
@@ -106,7 +107,7 @@ function PlateCarousel({ categories, active, onChange }) {
       </div>
 
       <div className="plates__caption" aria-live="polite">
-        <button type="button" className="plates__arrow" onClick={() => go(active - 1)} disabled={active === 0} aria-label="Previous category">
+        <button type="button" className="plates__arrow" onClick={() => go(active - 1)} disabled={active === 0} aria-label={t('Previous category')}>
           <span style={{ transform: 'scaleX(-1)', display: 'inline-flex' }}>
             <Arrow />
           </span>
@@ -114,11 +115,11 @@ function PlateCarousel({ categories, active, onChange }) {
         <div className="plates__text" key={current.title}>
           <h2 className="display plates__title">{current.title}</h2>
           <p className="plates__sub">
-            <span className="plates__count">{current.items.length}</span> {current.items.length === 1 ? 'item' : 'items'} ·{' '}
+            <span className="plates__count">{current.items.length}</span> {t.plural(current.items.length, 'item', 'items')} ·{' '}
             {active + 1} / {count}
           </p>
         </div>
-        <button type="button" className="plates__arrow" onClick={() => go(active + 1)} disabled={active === count - 1} aria-label="Next category">
+        <button type="button" className="plates__arrow" onClick={() => go(active + 1)} disabled={active === count - 1} aria-label={t('Next category')}>
           <Arrow />
         </button>
       </div>
@@ -135,6 +136,7 @@ function PlateCarousel({ categories, active, onChange }) {
 /* Full-screen dish view: big plate, name, description, price. Swipe / arrows / keys between the
    category's photographed dishes; Esc or the backdrop closes it. */
 function DishViewer({ items, index, onIndex, onClose }) {
+  const { t } = useLanguage();
   const it = items[index];
   const drag = useRef({ x: 0, on: false, swiped: false });
   const go = (d) => onIndex((index + d + items.length) % items.length);
@@ -171,7 +173,7 @@ function DishViewer({ items, index, onIndex, onClose }) {
         }
       }}
     >
-      <button type="button" className="dish-viewer__close" onClick={onClose} aria-label="Close">
+      <button type="button" className="dish-viewer__close" onClick={onClose} aria-label={t('Close')}>
         ✕
       </button>
       <div className="dish-viewer__body" key={it.name}>
@@ -184,7 +186,7 @@ function DishViewer({ items, index, onIndex, onClose }) {
       </div>
       {items.length > 1 && (
         <div className="dish-viewer__nav">
-          <button type="button" className="plates__arrow" onClick={() => go(-1)} aria-label="Previous dish">
+          <button type="button" className="plates__arrow" onClick={() => go(-1)} aria-label={t('Previous dish')}>
             <span style={{ transform: 'scaleX(-1)', display: 'inline-flex' }}>
               <Arrow />
             </span>
@@ -192,7 +194,7 @@ function DishViewer({ items, index, onIndex, onClose }) {
           <span className="eyebrow">
             {index + 1} / {items.length}
           </span>
-          <button type="button" className="plates__arrow" onClick={() => go(1)} aria-label="Next dish">
+          <button type="button" className="plates__arrow" onClick={() => go(1)} aria-label={t('Next dish')}>
             <Arrow />
           </button>
         </div>
@@ -315,6 +317,7 @@ function TextMenu({ cats }) {
 export default function Menu() {
   const { section = 'hookah' } = useParams();
   const { menu } = useContent();
+  const { t } = useLanguage();
   const ref = useRef(null);
   const [active, setActive] = useState(0);
   const current = menu[section];
@@ -369,7 +372,7 @@ export default function Menu() {
 
       <div className="menu-bar">
         <div className="wrap">
-          <nav className="menu-tabs" aria-label="Menu sections">
+          <nav className="menu-tabs" aria-label={t('Menu sections')}>
             {MENU_SECTIONS.map((s) => (
               <NavLink key={s} to={`/menu/${s}`} className={s === section ? 'active' : undefined} preventScrollReset>
                 {menu[s].label}

@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
+import { fill, localeOf } from '../content/i18n.js';
 import { lockScroll } from '../lib/motion.js';
 import { telHref } from './ui.jsx';
 
@@ -24,9 +25,6 @@ const toMin = (hhmm) => {
   const [h, m] = String(hhmm).split(':').map(Number);
   return (h || 0) * 60 + (m || 0);
 };
-// fills {placeholders} in admin-editable texts
-const fill = (text, vars) => String(text).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
-
 const fmt = (min) => `${String(Math.floor(min / 60) % 24).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
 const addDays = (iso, n) => {
   const d = new Date(`${iso}T12:00:00Z`);
@@ -47,7 +45,8 @@ function timeSlots(open, close, date) {
 }
 
 function BookingModal({ onClose }) {
-  const { general, hours, booking: t } = useContent();
+  const { general, hours, booking: tx } = useContent();
+  const { lang, t } = useLanguage();
   const today = yerevanToday();
   const [form, setForm] = useState({ name: '', phone: '+374 ', guests: 2, date: today, time: '', website: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
@@ -75,7 +74,7 @@ function BookingModal({ onClose }) {
   const submit = async (e) => {
     e.preventDefault();
     if (!form.time) {
-      setError(t.chooseTimeError);
+      setError(tx.chooseTimeError);
       setStatus('error');
       return;
     }
@@ -85,18 +84,19 @@ function BookingModal({ onClose }) {
       const res = await fetch('/api/book', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, lang }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || t.sendError);
+      if (!res.ok) throw new Error(data.error ? t(data.error) : tx.sendError);
       setStatus('sent');
     } catch (err) {
-      setError(err.message);
+      // a dropped connection has no message of ours: show the friendly one
+      setError(err instanceof TypeError ? tx.sendError : err.message);
       setStatus('error');
     }
   };
 
-  const dateLabel = new Date(`${form.date}T12:00:00Z`).toLocaleDateString('en-GB', {
+  const dateLabel = new Date(`${form.date}T12:00:00Z`).toLocaleDateString(localeOf(lang), {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -106,49 +106,49 @@ function BookingModal({ onClose }) {
   return (
     <div className="booking" role="dialog" aria-modal="true" aria-labelledby="booking-title" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="booking__panel">
-        <button type="button" className="booking__close" onClick={onClose} aria-label="Close">
+        <button type="button" className="booking__close" onClick={onClose} aria-label={t('Close')}>
           ✕
         </button>
 
         {status === 'sent' ? (
           <div className="booking__done">
-            <p className="eyebrow eyebrow--accent">{t.sentLabel}</p>
+            <p className="eyebrow eyebrow--accent">{tx.sentLabel}</p>
             <h2 className="display booking__title" id="booking-title">
-              {fill(t.sentTitle, { name: form.name.trim().split(' ')[0] })}
+              {fill(tx.sentTitle, { name: form.name.trim().split(' ')[0] })}
             </h2>
             <p className="booking__summary">
-              {fill(t.tableFor, { guests: form.guests })} · {dateLabel} · {form.time}
+              {fill(tx.tableFor, { guests: form.guests })} · {dateLabel} · {form.time}
             </p>
-            <p className="muted">{fill(t.sentText, { phone: general.phone })}</p>
+            <p className="muted">{fill(tx.sentText, { phone: general.phone })}</p>
             <button type="button" className="btn" onClick={onClose}>
-              {t.done}
+              {tx.done}
             </button>
           </div>
         ) : (
           <form className="booking__form" onSubmit={submit} noValidate>
             <p className="eyebrow eyebrow--accent">{general.brand}</p>
             <h2 className="display booking__title" id="booking-title">
-              {t.title}
+              {tx.title}
             </h2>
 
             <label className="field">
-              <span>{t.name}</span>
+              <span>{tx.name}</span>
               <input ref={firstField} type="text" autoComplete="name" required minLength={2} maxLength={60} value={form.name} onChange={set('name')} />
             </label>
 
             <label className="field">
-              <span>{t.phone}</span>
+              <span>{tx.phone}</span>
               <input type="tel" autoComplete="tel" inputMode="tel" required maxLength={30} value={form.phone} onChange={set('phone')} />
             </label>
 
             <div className="field">
-              <span>{t.guests}</span>
+              <span>{tx.guests}</span>
               <div className="stepper">
-                <button type="button" aria-label="Fewer guests" onClick={() => setForm((f) => ({ ...f, guests: Math.max(1, f.guests - 1) }))}>
+                <button type="button" aria-label={t('Fewer guests')} onClick={() => setForm((f) => ({ ...f, guests: Math.max(1, f.guests - 1) }))}>
                   −
                 </button>
                 <output aria-live="polite">{form.guests}</output>
-                <button type="button" aria-label="More guests" onClick={() => setForm((f) => ({ ...f, guests: Math.min(30, f.guests + 1) }))}>
+                <button type="button" aria-label={t('More guests')} onClick={() => setForm((f) => ({ ...f, guests: Math.min(30, f.guests + 1) }))}>
                   +
                 </button>
               </div>
@@ -156,14 +156,14 @@ function BookingModal({ onClose }) {
 
             <div className="field-row">
               <label className="field">
-                <span>{t.date}</span>
+                <span>{tx.date}</span>
                 <input type="date" required min={today} max={addDays(today, 60)} value={form.date} onChange={set('date')} />
               </label>
               <label className="field">
-                <span>{t.time}</span>
+                <span>{tx.time}</span>
                 <select required value={form.time} onChange={set('time')}>
                   <option value="" disabled>
-                    {slots.length ? t.choose : t.noTimes}
+                    {slots.length ? tx.choose : tx.noTimes}
                   </option>
                   {slots.map((t) => (
                     <option key={t} value={t}>
@@ -185,10 +185,10 @@ function BookingModal({ onClose }) {
             )}
 
             <button type="submit" className="btn booking__submit" disabled={status === 'sending'}>
-              {status === 'sending' ? t.sending : t.submit}
+              {status === 'sending' ? tx.sending : tx.submit}
             </button>
             <p className="booking__note muted">
-              {fill(t.note, { open: hours.open, close: hours.close })} <a href={telHref(general.phone)}>{general.phone}</a>
+              {fill(tx.note, { open: hours.open, close: hours.close })} <a href={telHref(general.phone)}>{general.phone}</a>
             </p>
           </form>
         )}

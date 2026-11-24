@@ -33,7 +33,9 @@ export function validateBooking(body) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(date))) return { error: 'Please choose a date.' };
   if (!/^\d{2}:\d{2}$/.test(time)) return { error: 'Please choose a time.' };
 
-  return { booking: { name, phone, guests, date, time } };
+  const lang = { hy: 'Armenian', ru: 'Russian' }[b.lang] || 'English';
+
+  return { booking: { name, phone, guests, date, time, lang } };
 }
 
 function formatDate(iso) {
@@ -55,6 +57,7 @@ export async function sendBooking(booking, env = process.env) {
     `<b>Guests:</b> ${booking.guests}`,
     `<b>Date:</b> ${escapeHtml(formatDate(booking.date))}`,
     `<b>Time:</b> ${escapeHtml(booking.time)}`,
+    `<b>Language:</b> ${booking.lang || 'English'}`,
   ].join('\n');
 
   try {

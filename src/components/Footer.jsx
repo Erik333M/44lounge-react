@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
 import { scrollToTop, useScene, reveals } from '../lib/motion.js';
 import { Brand } from './Nav.jsx';
 import { BookButton } from './Booking.jsx';
@@ -59,6 +59,7 @@ export default function Footer() {
   const h = footer.headings;
   const ref = useRef(null);
   const now = useYerevanClock();
+  const { t } = useLanguage();
   const year = new Date().getFullYear();
 
   useScene(ref, ({ motion }) => motion && reveals(ref.current), [footer.ctaTitle]);
@@ -172,7 +173,7 @@ export default function Footer() {
         <div className="footer__bottom">
           <span>{footer.copyright.replace('{year}', year)}</span>
           <span>
-            Yerevan {now.text} · {menu.intro}
+            {t('Yerevan')} {now.text} · {menu.intro}
           </span>
           <button type="button" onClick={() => scrollToTop(true)}>
             {buttons.backToTop}

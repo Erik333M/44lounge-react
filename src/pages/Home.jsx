@@ -1,11 +1,12 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { asset } from '../asset.js';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
 import { gsap, reveals, useScene } from '../lib/motion.js';
 import { Arrow, Img, OpenStatus, Split, Star, telHref, useYerevanClock } from '../components/ui.jsx';
 import SmokeDigits from '../components/SmokeDigits.jsx';
 import { BookButton } from '../components/Booking.jsx';
+import { dishesOfTheDay, serviceDay } from '../lib/dailyDishes.js';
 
 /* Storyboard
    1. Hero (pinned ~150vh): a dark screen, no menu, only a transparent "44" drawn by smoke moving inside
@@ -66,9 +67,12 @@ function Hero() {
         .to('.hero__copy .w > span', { yPercent: 0, stagger: 0.04, ease: 'power3.out', duration: 0.35 }, 0.78)
         .to('.hero__actions', { autoAlpha: 1, y: 0, duration: 0.25 }, 1.05);
 
-      // first paint: the smoke digits fade up out of the dark
-      gsap.from('.hero__digits-in', { autoAlpha: 0, duration: 2.2, ease: 'power2.out' });
-      gsap.from('.hero__hint', { autoAlpha: 0, duration: 1, delay: 1.6 });
+      // first paint: the smoke digits fade up out of the dark. Only at the top of the page: when the scene is
+      // rebuilt further down (e.g. after switching language) these would undo what the scroll already hid.
+      if (window.scrollY < 10) {
+        gsap.from('.hero__digits-in', { autoAlpha: 0, duration: 2.2, ease: 'power2.out' });
+        gsap.from('.hero__hint', { autoAlpha: 0, duration: 1, delay: 1.6 });
+      }
     },
     [hero.title, hero.image]
   );
@@ -280,10 +284,13 @@ function Statement() {
 }
 
 function Dishes() {
-  const { home, buttons } = useContent();
+  const { home, buttons, menu } = useContent();
   const { dishes } = home;
   const ref = useRef(null);
   const [active, setActive] = useState(-1);
+  useYerevanClock(); // re-renders every few seconds, so the set switches at 06:00 even without a reload
+  const day = serviceDay();
+  const items = useMemo(() => dishesOfTheDay(menu.kitchen, Number(dishes.count) || 6, day), [menu.kitchen, dishes.count, day]);
 
   useScene(
     ref,
@@ -311,34 +318,39 @@ function Dishes() {
         list.removeEventListener('pointerleave', leave);
       };
     },
-    [JSON.stringify(dishes)]
+    [JSON.stringify(items)]
   );
 
   return (
     <section className="dishes" ref={ref}>
       <div className="wrap">
         <div className="dishes__head">
-          <h2 className="display section-title" data-reveal="rise">
-            <Split text={dishes.title} />
-          </h2>
+          <div>
+            <p className="eyebrow eyebrow--accent dishes__eyebrow" data-reveal="fade">
+              {dishes.eyebrow}
+            </p>
+            <h2 className="display section-title" data-reveal="rise">
+              <Split text={dishes.title} />
+            </h2>
+          </div>
           <Link className="btn" to="/menu/kitchen" data-reveal="fade">
             {buttons.fullKitchenMenu} <Arrow />
           </Link>
         </div>
         <ul className="dishes__list" data-reveal="list">
-          {dishes.items.map((d, i) => (
+          {items.map((d, i) => (
             <li className="dish" key={i} onPointerEnter={() => setActive(i)}>
               <span className="dish__no">{String(i + 1).padStart(2, '0')}</span>
               <Img className="dish__thumb" src={d.image} alt={d.name} />
               <h3 className="dish__name">{d.name}</h3>
-              <p className="dish__desc">{d.description}</p>
+              <p className="dish__desc">{d.description || d.category}</p>
               <span className="dish__price">{d.price}</span>
             </li>
           ))}
         </ul>
       </div>
       <div className="dishes__float" aria-hidden="true">
-        {dishes.items.map((d, i) => (
+        {items.map((d, i) => (
           <Img key={i} src={d.image} className={i === active ? 'is-active' : undefined} />
         ))}
       </div>
@@ -350,6 +362,7 @@ function Hours() {
   const { hours, general } = useContent();
   const ref = useRef(null);
   const now = useYerevanClock();
+  const { t } = useLanguage();
   useScene(
     ref,
     ({ motion }) => {
@@ -370,7 +383,7 @@ function Hours() {
         </div>
         <div className="hours__side" data-reveal="fade">
           <OpenStatus />
-          <span className="clock">Yerevan · {now.text}</span>
+          <span className="clock">{t('Yerevan')} · {now.text}</span>
           <a className="btn" href={telHref(general.phone)}>
             {general.phone}
           </a>

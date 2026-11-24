@@ -8,6 +8,7 @@ import { fontFaces, googleFontsHref } from '../content/theme.js';
 import { saveContent } from './api.js';
 import { ObjectEditor } from './fields.jsx';
 import { ColorsEditor, FontsEditor } from './theme-editors.jsx';
+import { TranslationsEditor } from './translations-editor.jsx';
 import './admin.css';
 
 const SECTIONS = [
@@ -26,6 +27,8 @@ const SECTIONS = [
   { id: 'hookah', group: 'Menu', label: 'Hookah', path: ['menu', 'hookah'], page: '/menu/hookah' },
   { id: 'kitchen', group: 'Menu', label: 'Kitchen', path: ['menu', 'kitchen'], page: '/menu/kitchen' },
   { id: 'bar', group: 'Menu', label: 'Bar', path: ['menu', 'bar'], page: '/menu/bar' },
+  { id: 'lang-hy', group: 'Languages', label: 'Հայերեն · Armenian', lang: 'hy', page: '/' },
+  { id: 'lang-ru', group: 'Languages', label: 'Русский · Russian', lang: 'ru', page: '/' },
 ];
 
 const PAGES = [
@@ -58,9 +61,11 @@ export default function Admin() {
   const frameRef = useRef(null);
   const draftRef = useRef(draft);
   draftRef.current = draft;
+  const langRef = useRef('en');
 
   const dirty = JSON.stringify(draft) !== savedJson;
   const current = SECTIONS.find((s) => s.id === section) || SECTIONS[0];
+  langRef.current = current.lang || 'en'; // the preview shows the language being edited
 
   useEffect(() => {
     document.title = 'Admin · 44Lounge';
@@ -90,13 +95,16 @@ export default function Admin() {
 
   // ---- live preview ----
   const sendPreview = useCallback(() => {
-    frameRef.current?.contentWindow?.postMessage({ type: PREVIEW_MESSAGE, content: draftRef.current }, window.location.origin);
+    frameRef.current?.contentWindow?.postMessage(
+      { type: PREVIEW_MESSAGE, content: draftRef.current, lang: langRef.current },
+      window.location.origin
+    );
   }, []);
 
   useEffect(() => {
     const t = setTimeout(sendPreview, 300);
     return () => clearTimeout(t);
-  }, [draft, sendPreview]);
+  }, [draft, section, sendPreview]);
 
   useEffect(() => {
     const onMessage = (e) => {
@@ -213,6 +221,9 @@ export default function Admin() {
             <ColorsEditor colors={draft.theme.colors} onChange={(colors) => set('theme', { ...draft.theme, colors })} />
           )}
           {section === 'fonts' && <FontsEditor theme={draft.theme} onChange={(theme) => set('theme', theme)} />}
+          {current.lang && (
+            <TranslationsEditor content={draft} lang={current.lang} onChange={(translations) => set('translations', translations)} />
+          )}
           {current.path && (
             <ObjectEditor
               value={

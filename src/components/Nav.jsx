@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
+import { LANGUAGES } from '../content/i18n.js';
 import { onScroll } from '../lib/motion.js';
 import { OpenStatus, telHref } from './ui.jsx';
 import { BookButton } from './Booking.jsx';
@@ -16,8 +17,32 @@ export function Brand() {
   );
 }
 
+// EN / ՀԱՅ / РУ
+export function LanguageSwitch({ className = '', tabIndex }) {
+  const { lang, setLang, t } = useLanguage();
+  return (
+    <div className={`lang-switch ${className}`} role="group" aria-label={t('Language')}>
+      {LANGUAGES.map((l) => (
+        <button
+          key={l.code}
+          type="button"
+          lang={l.code}
+          title={l.name}
+          aria-pressed={lang === l.code}
+          className={lang === l.code ? 'is-active' : undefined}
+          tabIndex={tabIndex}
+          onClick={() => setLang(l.code)}
+        >
+          {l.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function Nav() {
   const { general, buttons } = useContent();
+  const { t } = useLanguage();
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -59,7 +84,7 @@ export default function Nav() {
       <header className={`nav${scrolled && !open ? ' is-scrolled' : ''}${hidden && !open ? ' is-hidden' : ''}${intro && !open ? ' is-intro' : ''}`}>
         <div className="wrap nav__inner">
           <Brand />
-          <nav className="nav__links" aria-label="Main">
+          <nav className="nav__links" aria-label={t('Main')}>
             {links.map(([to, label]) => (
               <NavLink key={to} to={to} end={to === '/'}>
                 {label}
@@ -68,11 +93,12 @@ export default function Nav() {
           </nav>
           <div className="nav__right">
             <OpenStatus />
+            <LanguageSwitch className="nav__lang" />
             <BookButton className="btn btn--accent btn--small" />
             <button
               type="button"
               className={`nav__burger${open ? ' is-open' : ''}`}
-              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-label={open ? t('Close menu') : t('Open menu')}
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
             >

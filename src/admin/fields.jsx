@@ -25,7 +25,7 @@ const LABELS = {
   rows: 'Rows (separate words with ·)',
   statement: 'Big statement',
   worlds: 'Three menus block',
-  dishes: 'Popular dishes',
+  dishes: 'Dishes of the day',
   gallery: 'Photo strip',
   link: 'Link',
   bigText: 'Giant word',
@@ -41,6 +41,7 @@ const LABELS = {
   paragraphs: 'Paragraphs',
   lines: 'Lines',
   video: 'Smoke video (inside the 44)',
+  count: 'How many dishes',
   image: 'Photo',
   name: 'Name',
   description: 'Description',
@@ -89,8 +90,10 @@ const HINTS = {
   tableFor: '{guests} is replaced with the number of guests.',
   sentText: '{phone} is replaced with the lounge phone number.',
   call: 'The phone number is added after this word.',
+  count: 'Kitchen dishes with a photo are picked automatically. The set changes every day at 06:00 (Yerevan time) and is the same for every visitor.',
 };
 
+const NUMBER_LIMITS = { count: [1, 12] };
 const HIDDEN = new Set([]); // keys never shown as fields
 const IMAGE_KEYS = new Set(['image']);
 const VIDEO_KEYS = new Set(['video']);
@@ -136,6 +139,22 @@ export function Field({ k, parentKey, value, path, onChange }) {
         <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} />
         {labelFor(k)}
       </label>
+    );
+  }
+  if (typeof value === 'number') {
+    return (
+      <div className="adm-field">
+        <label className="adm-label">{labelFor(k, path)}</label>
+        <input
+          className="adm-input adm-number"
+          type="number"
+          min={NUMBER_LIMITS[k]?.[0]}
+          max={NUMBER_LIMITS[k]?.[1]}
+          value={value}
+          onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
+        />
+        {HINTS[k] && <p className="adm-hint">{HINTS[k]}</p>}
+      </div>
     );
   }
   if (Array.isArray(value)) {

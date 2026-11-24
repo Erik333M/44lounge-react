@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { asset } from '../asset.js';
-import { useContent } from '../content/ContentContext.jsx';
+import { useContent, useLanguage } from '../content/ContentContext.jsx';
 
 // Heading text split into words, each inside a mask, for the "rise" entrance.
 export function Split({ text, as: Tag = 'span', className = '', ...rest }) {
@@ -74,13 +74,14 @@ export function useYerevanClock() {
 
 export function OpenStatus({ withTime = false }) {
   const { hours } = useContent();
+  const { t } = useLanguage();
   const now = useYerevanClock();
   const open = isOpenAt(now.minutes, hours.open, hours.close);
   return (
     <span className={`status${open ? ' is-open' : ''}`}>
       <span className="status__dot" />
       {open ? hours.openNow : hours.closedNow}
-      {withTime && <span className="muted"> · Yerevan {now.text}</span>}
+      {withTime && <span className="muted"> · {t('Yerevan')} {now.text}</span>}
     </span>
   );
 }
