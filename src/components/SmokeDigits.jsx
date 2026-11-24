@@ -13,6 +13,7 @@ import { asset } from '../asset.js';
    straight into a canvas, which showed the whole smoke clip over the screen instead of inside the 4s. */
 
 const FADE = 1.2; // seconds of crossfade between loop passes, so the restart is never visible
+const SWAP_MS = 700; // fade when a digit's smoke first appears, or switches from borrowed to its own
 
 // One endlessly looping smoke source made of two copies of the clip that crossfade before the end.
 class SmokeSource {
@@ -20,13 +21,17 @@ class SmokeSource {
     this.offset = offset;
     this.front = 0;
     this.fadeStart = -Infinity;
-    this.videos = [0, 1].map(() => {
+    this.liveSince = 0; // when this source's video first really played (0 = not yet)
+    this.videos = [0, 1].map((i) => {
       const v = document.createElement('video');
-      v.src = src;
       v.muted = true;
       v.playsInline = true;
       v.setAttribute('playsinline', '');
-      v.preload = 'auto';
+      // the second copy is only needed for the loop's crossfade near the end: it loads later, so at first
+      // the phone downloads just the video that is shown
+      v.preload = i === 0 ? 'auto' : 'none';
+      v.addEventListener('playing', () => (v.live = true));
+      v.src = src;
       host.appendChild(v);
       return v;
     });
@@ -41,10 +46,22 @@ class SmokeSource {
     else first.addEventListener('loadedmetadata', start, { once: true });
   }
 
+  // true once the shown video really plays (after its first seek and buffering)
+  get live() {
+    const v = this.videos[this.front];
+    return !!v.live && v.readyState >= 2 && !v.seeking;
+  }
+
   update(now) {
     const f = this.videos[this.front];
     const b = this.videos[1 - this.front];
     const d = f.duration;
+    if (!this.liveSince && this.live) this.liveSince = now;
+    // start loading the crossfade copy a few seconds before it is needed
+    if (d && b.preload === 'none' && f.currentTime >= d - FADE - 4) {
+      b.preload = 'auto';
+      b.load();
+    }
     if (d && f.currentTime >= d - FADE && b.paused) {
       b.currentTime = 0;
       b.play().catch(() => {});
@@ -54,11 +71,21 @@ class SmokeSource {
     }
   }
 
-  // draws the current smoke frame (blending the two passes while they overlap) into rect
-  draw(ctx, rect, now) {
+  // Draws the current smoke frame (blending the two passes while they overlap) into rect,
+  // optionally faded (opacity) and mirrored left-right around the rect's centre.
+  draw(ctx, rect, now, { opacity = 1, mirror = false } = {}) {
+    if (opacity <= 0) return;
     const t = Math.min(1, (now - this.fadeStart) / (FADE * 1000));
-    if (t < 1) drawCover(ctx, this.frame(1 - this.front, now), rect, 1);
-    drawCover(ctx, this.frame(this.front, now), rect, t < 1 ? t : 1);
+    let r = rect;
+    if (mirror) {
+      ctx.save();
+      ctx.translate(rect.x + rect.w / 2, 0);
+      ctx.scale(-1, 1);
+      r = { ...rect, x: -rect.w / 2 };
+    }
+    if (t < 1) drawCover(ctx, this.frame(1 - this.front, now), r, opacity);
+    drawCover(ctx, this.frame(this.front, now), r, (t < 1 ? t : 1) * opacity);
+    if (mirror) ctx.restore();
   }
 
   // The canvas copy of video i for this animation frame (copied at most once per frame, even when the
@@ -171,7 +198,7 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
-    // phones: the smoke of each digit is mixed here first (two columns), then clipped to the digit
+    // the smoke of each digit is mixed here first (fades, mirroring), then clipped to the digit in one step
     const mix = document.createElement('canvas');
     const mctx = mix.getContext('2d');
     // The video elements only feed the canvas. They live directly in <body>, fixed on screen and almost
@@ -247,26 +274,33 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
         octx.fillText('4', d.x, d.y);
         octx.globalCompositeOperation = 'source-in';
         octx.filter = 'brightness(1.35) contrast(1.1)';
+        // where the smoke frame goes
+        let rect;
         if (portrait) {
-          // Phones: one copy of this digit's smoke, centred on the digit. The clip is tall with the smoke in a
-          // narrow column, so it is scaled by the digit's height (not stretched to its width, which blew the
-          // smoke up into one huge wisp).
-          const aspect = smoke.aspect() || 9 / 16;
+          // Phones: one copy of the smoke, centred on the digit. The clip is tall with the smoke in a narrow
+          // column, so it is scaled by the digit's height (stretching it to the digit's width blew it up).
           const th = d.box.h * 2.6;
-          const tw = th * aspect;
-          const cx = d.box.x + d.box.w / 2;
-          const cy = d.box.y + d.box.h / 2;
-          mctx.setTransform(1, 0, 0, 1, 0, 0);
-          mctx.clearRect(0, 0, mix.width, mix.height);
-          zoom(mctx);
-          smoke.draw(mctx, { x: cx - tw / 2, y: cy - th / 2, w: tw, h: th }, now);
-          octx.setTransform(1, 0, 0, 1, 0, 0);
-          octx.drawImage(mix, 0, 0);
+          const tw = th * (smoke.aspect() || 9 / 16);
+          rect = { x: d.box.x + d.box.w / 2 - tw / 2, y: d.box.y + d.box.h / 2 - th / 2, w: tw, h: th };
         } else {
-          // smoke frame enlarged around the digit so the wisps fill more of the shape
+          // wide screens: enlarged around the digit so the wisps fill more of the shape
           const grow = 0.35;
-          smoke.draw(octx, { x: d.box.x - d.box.w * grow, y: d.box.y - d.box.h * grow * 0.4, w: d.box.w * (1 + grow * 2), h: d.box.h * (1 + grow * 0.8) }, now);
+          rect = { x: d.box.x - d.box.w * grow, y: d.box.y - d.box.h * grow * 0.4, w: d.box.w * (1 + grow * 2), h: d.box.h * (1 + grow * 0.8) };
         }
+        // The second digit's video starts 5 s into the clip, and on a phone that part takes a moment to load.
+        // Until a digit's own video really plays, it shows the other digit's smoke mirrored (so it is never
+        // empty), then fades over to its own. The very first smoke fades in instead of popping.
+        const other = sources[1 - i];
+        const own = smoke.liveSince ? Math.min(1, (now - smoke.liveSince) / SWAP_MS) : 0;
+        const borrowed = other.liveSince ? Math.min(1, (now - other.liveSince) / SWAP_MS) * (1 - own) : 0;
+        mctx.setTransform(1, 0, 0, 1, 0, 0);
+        mctx.clearRect(0, 0, mix.width, mix.height);
+        zoom(mctx);
+        if (borrowed > 0) other.draw(mctx, rect, now, { opacity: borrowed, mirror: true });
+        if (own > 0) smoke.draw(mctx, rect, now, { opacity: own });
+        // the mixed smoke is clipped to the digit in one step (Safari-safe: canvas into canvas)
+        octx.setTransform(1, 0, 0, 1, 0, 0);
+        octx.drawImage(mix, 0, 0);
         octx.filter = 'none';
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
