@@ -6,7 +6,11 @@ import { asset } from '../asset.js';
    are drawn only by the smoke moving inside them.
 
    Drawn on a canvas because browsers can't clip a video to the shape of a text glyph otherwise.
-   `state` is shared with the hero's scroll animation: { scale, paused }. */
+   `state` is shared with the hero's scroll animation: { scale, paused }.
+
+   Every video frame is first copied into a plain canvas (a "frame") and only that copy is clipped and
+   blended: Safari (iPhone, iPad, Mac) ignores blend modes and transparency when a <video> is drawn
+   straight into a canvas, which showed the whole smoke clip over the screen instead of inside the 4s. */
 
 const FADE = 1.2; // seconds of crossfade between loop passes, so the restart is never visible
 
@@ -26,6 +30,8 @@ class SmokeSource {
       host.appendChild(v);
       return v;
     });
+    // a canvas copy of each video's current frame, refreshed once per animation frame
+    this.frames = this.videos.map(() => ({ canvas: document.createElement('canvas'), at: -1 }));
     const first = this.videos[0];
     const start = () => {
       first.currentTime = Math.min(offset, (first.duration || offset + 1) - FADE - 0.1);
@@ -51,10 +57,29 @@ class SmokeSource {
   // draws the current smoke frame (blending the two passes while they overlap) into rect
   draw(ctx, rect, now) {
     const t = Math.min(1, (now - this.fadeStart) / (FADE * 1000));
-    const cur = this.videos[this.front];
-    const old = this.videos[1 - this.front];
-    if (t < 1) drawCover(ctx, old, rect, 1);
-    drawCover(ctx, cur, rect, t < 1 ? t : 1);
+    if (t < 1) drawCover(ctx, this.frame(1 - this.front, now), rect, 1);
+    drawCover(ctx, this.frame(this.front, now), rect, t < 1 ? t : 1);
+  }
+
+  // The canvas copy of video i for this animation frame (copied at most once per frame, even when the
+  // same smoke is drawn into both digits). null until the video has a picture.
+  frame(i, now) {
+    const v = this.videos[i];
+    if (v.readyState < 2 || !v.videoWidth) return null;
+    const f = this.frames[i];
+    if (f.at !== now) {
+      // half the clip's resolution is plenty for soft smoke and keeps phones fast
+      const w = Math.round(v.videoWidth / 2);
+      const h = Math.round(v.videoHeight / 2);
+      if (f.canvas.width !== w || f.canvas.height !== h) {
+        f.canvas.width = w;
+        f.canvas.height = h;
+      }
+      // a plain, opaque copy: no blend modes or transparency involved, so every browser does it the same
+      f.canvas.getContext('2d').drawImage(v, 0, 0, w, h);
+      f.at = now;
+    }
+    return f.canvas;
   }
 
   pause() {
@@ -85,19 +110,23 @@ class SmokeSource {
       v.load();
       v.remove();
     });
+    this.frames.forEach((f) => {
+      f.canvas.width = 0;
+      f.canvas.height = 0;
+    });
   }
 }
 
-function drawCover(ctx, video, { x, y, w, h }, alpha) {
-  if (video.readyState < 2 || !video.videoWidth) return;
-  const vr = video.videoWidth / video.videoHeight;
+function drawCover(ctx, frame, { x, y, w, h }, alpha) {
+  if (!frame || !frame.width || !frame.height) return;
+  const vr = frame.width / frame.height;
   const rr = w / h;
   let dw = w;
   let dh = h;
   if (vr > rr) dw = h * vr;
   else dh = w / vr;
   ctx.globalAlpha = alpha;
-  ctx.drawImage(video, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  ctx.drawImage(frame, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
   ctx.globalAlpha = 1;
 }
 
@@ -219,26 +248,18 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
         octx.globalCompositeOperation = 'source-in';
         octx.filter = 'brightness(1.35) contrast(1.1)';
         if (portrait) {
-          // Phones: the video is tall and its smoke is a narrow column, so filling a whole digit from one copy
-          // blows the smoke up. Instead two finer columns side by side: this digit's smoke, and the other
-          // digit's smoke mirrored (so the two 4s still look different from each other).
+          // Phones: one copy of this digit's smoke, centred on the digit. The clip is tall with the smoke in a
+          // narrow column, so it is scaled by the digit's height (not stretched to its width, which blew the
+          // smoke up into one huge wisp).
           const aspect = smoke.aspect() || 9 / 16;
-          const th = d.box.h * 1.6;
+          const th = d.box.h * 2.6;
           const tw = th * aspect;
           const cx = d.box.x + d.box.w / 2;
-          const ty = d.box.y + d.box.h / 2 - th / 2;
-          const shift = d.box.w * 0.2;
+          const cy = d.box.y + d.box.h / 2;
           mctx.setTransform(1, 0, 0, 1, 0, 0);
           mctx.clearRect(0, 0, mix.width, mix.height);
           zoom(mctx);
-          mctx.globalCompositeOperation = 'screen';
-          smoke.draw(mctx, { x: cx - shift - tw / 2, y: ty, w: tw, h: th }, now);
-          mctx.save();
-          mctx.translate(cx + shift, 0);
-          mctx.scale(-1, 1);
-          sources[1 - i].draw(mctx, { x: -tw / 2, y: ty, w: tw, h: th }, now);
-          mctx.restore();
-          mctx.globalCompositeOperation = 'source-over';
+          smoke.draw(mctx, { x: cx - tw / 2, y: cy - th / 2, w: tw, h: th }, now);
           octx.setTransform(1, 0, 0, 1, 0, 0);
           octx.drawImage(mix, 0, 0);
         } else {
