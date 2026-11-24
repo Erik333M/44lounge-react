@@ -50,6 +50,7 @@ function Hero() {
           start: 'top top',
           end: mobile ? '+=110%' : '+=150%',
           pin: '.hero__stage',
+          anticipatePin: 1, // pins a moment early, avoiding a jump when scrolling fast (phones)
           scrub: 0.8,
           // the smoke only needs to run while it can be seen
           onUpdate: (self) => {

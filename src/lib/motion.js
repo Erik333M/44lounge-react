@@ -7,6 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
+// On phones the browser bar shows and hides while scrolling, which changes the window height. Recalculating
+// every scroll animation for that makes the pinned hero jump, so those height-only changes are ignored.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger };
 

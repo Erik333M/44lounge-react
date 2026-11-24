@@ -61,6 +61,12 @@ class SmokeSource {
     this.videos.forEach((v) => v.pause());
   }
 
+  // width / height of the clip (0 until it is known)
+  aspect() {
+    const v = this.videos[this.front];
+    return v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 0;
+  }
+
   // Asks the front video to play. Phones may refuse or pause it on their own (iPhone Safari won't start a
   // silent video it considers hidden, and pauses videos when the tab is in the background), so this is
   // called every frame and retries about once a second until the video really runs.
@@ -136,6 +142,9 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
+    // phones: the smoke of each digit is mixed here first (two columns), then clipped to the digit
+    const mix = document.createElement('canvas');
+    const mctx = mix.getContext('2d');
     // The video elements only feed the canvas. They live directly in <body>, fixed on screen and almost
     // transparent: inside the hero they would be hidden together with the 44 while scrolling, and iPhone
     // Safari then refuses to resume them when the 44 comes back (frozen smoke after scrolling up).
@@ -150,13 +159,14 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
     let dpr = 1;
     let digits = [];
     let raf = 0;
-    let wasPaused = false;
+    let portrait = false;
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = canvas.clientWidth;
       h = canvas.clientHeight;
-      for (const c of [canvas, off]) {
+      portrait = w / h < 0.8;
+      for (const c of [canvas, off, mix]) {
         c.width = Math.round(w * dpr);
         c.height = Math.round(h * dpr);
       }
@@ -165,14 +175,14 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
 
     const frame = (now) => {
       raf = requestAnimationFrame(frame);
-      if (state.paused) {
-        if (!wasPaused) sources.forEach((s) => s.pause());
-        wasPaused = true;
-        return;
-      }
-      if (wasPaused) sources.forEach((s) => (s.lastTry = 0)); // retry right away after being paused
-      sources.forEach((s) => s.play(now));
-      wasPaused = false;
+      // The videos keep playing while the page is open, even when the 44 is scrolled away: pausing and
+      // resuming is what phones (iPhone Safari) get wrong, leaving frozen smoke after scrolling back up.
+      // Only the drawing stops while the 44 can't be seen.
+      sources.forEach((s) => {
+        s.play(now);
+        s.update(now);
+      });
+      if (state.paused) return;
 
       const sc = state.scale || 1;
       // zoom around the screen centre (the scroll "fly-through"), applied while drawing so edges stay sharp
@@ -185,12 +195,11 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // nothing to draw while the hero has no size (e.g. inside a hidden admin preview)
-      if (!canvas.width || !canvas.height || !off.width || !off.height) return;
+      if (!canvas.width || !canvas.height || !off.width || !off.height || !mix.width || !mix.height) return;
 
       digits.forEach((d, i) => {
         const font = `700 ${d.size}px ${family}`;
         const smoke = sources[i];
-        smoke.update(now);
 
         // faint body so the shape is just perceptible between smoke wisps
         zoom(ctx);
@@ -209,9 +218,34 @@ export default function SmokeDigits({ src, state, offsets = [0, 5], className = 
         octx.fillText('4', d.x, d.y);
         octx.globalCompositeOperation = 'source-in';
         octx.filter = 'brightness(1.35) contrast(1.1)';
-        // smoke frame enlarged around the digit so the wisps fill more of the shape
-        const grow = 0.35;
-        smoke.draw(octx, { x: d.box.x - d.box.w * grow, y: d.box.y - d.box.h * grow * 0.4, w: d.box.w * (1 + grow * 2), h: d.box.h * (1 + grow * 0.8) }, now);
+        if (portrait) {
+          // Phones: the video is tall and its smoke is a narrow column, so filling a whole digit from one copy
+          // blows the smoke up. Instead two finer columns side by side: this digit's smoke, and the other
+          // digit's smoke mirrored (so the two 4s still look different from each other).
+          const aspect = smoke.aspect() || 9 / 16;
+          const th = d.box.h * 1.6;
+          const tw = th * aspect;
+          const cx = d.box.x + d.box.w / 2;
+          const ty = d.box.y + d.box.h / 2 - th / 2;
+          const shift = d.box.w * 0.2;
+          mctx.setTransform(1, 0, 0, 1, 0, 0);
+          mctx.clearRect(0, 0, mix.width, mix.height);
+          zoom(mctx);
+          mctx.globalCompositeOperation = 'screen';
+          smoke.draw(mctx, { x: cx - shift - tw / 2, y: ty, w: tw, h: th }, now);
+          mctx.save();
+          mctx.translate(cx + shift, 0);
+          mctx.scale(-1, 1);
+          sources[1 - i].draw(mctx, { x: -tw / 2, y: ty, w: tw, h: th }, now);
+          mctx.restore();
+          mctx.globalCompositeOperation = 'source-over';
+          octx.setTransform(1, 0, 0, 1, 0, 0);
+          octx.drawImage(mix, 0, 0);
+        } else {
+          // smoke frame enlarged around the digit so the wisps fill more of the shape
+          const grow = 0.35;
+          smoke.draw(octx, { x: d.box.x - d.box.w * grow, y: d.box.y - d.box.h * grow * 0.4, w: d.box.w * (1 + grow * 2), h: d.box.h * (1 + grow * 0.8) }, now);
+        }
         octx.filter = 'none';
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
