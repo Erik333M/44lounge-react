@@ -7,7 +7,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress;
-  const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body;
+  let body = req.body;
+  if (typeof body === 'string') {
+    try {
+      body = JSON.parse(body || '{}');
+    } catch {
+      return res.status(400).json({ error: 'Invalid request' });
+    }
+  }
   const result = await handleBooking(body, ip, process.env);
   return res.status(result.status).json(result.error ? { error: result.error } : { ok: true });
 }
