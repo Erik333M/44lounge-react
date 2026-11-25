@@ -157,25 +157,30 @@ function drawCover(ctx, frame, { x, y, w, h }, alpha) {
   ctx.globalAlpha = 1;
 }
 
-// Where the digits go: side by side, centred on the screen.
+// Where the digits go: side by side on wide screens, stacked on tall phone screens.
 function layout(ctx, w, h, family) {
-  // Always side by side, like on desktop. Tall phone screens are narrow, so there the pair may use more of
-  // the width (88% instead of 74%) to keep the digits large.
   const portrait = w / h < 0.8;
   ctx.font = `700 100px ${family}`;
   const m = ctx.measureText('4');
   const inkW = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
   const inkH = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
   const gap = 6; // at size 100
-  const size = Math.min((w * (portrait ? 0.88 : 0.74)) / (inkW * 2 + gap), (h * 0.62) / inkH) * 100;
+  let size;
+  if (portrait) size = Math.min((w * 0.8) / inkW, (h * 0.74) / (inkH * 2 + gap)) * 100;
+  else size = Math.min((w * 0.74) / (inkW * 2 + gap), (h * 0.62) / inkH) * 100;
   const k = size / 100;
   const dW = inkW * k;
   const dH = inkH * k;
   const g = gap * k;
-  const centers = [
-    [w / 2 - (dW + g) / 2, h / 2],
-    [w / 2 + (dW + g) / 2, h / 2],
-  ];
+  const centers = portrait
+    ? [
+        [w / 2, h / 2 - (dH + g) / 2],
+        [w / 2, h / 2 + (dH + g) / 2],
+      ]
+    : [
+        [w / 2 - (dW + g) / 2, h / 2],
+        [w / 2 + (dW + g) / 2, h / 2],
+      ];
   return centers.map(([cx, cy]) => ({
     size,
     // fillText position for a glyph whose ink box is centred on (cx, cy)
